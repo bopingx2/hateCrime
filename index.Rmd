@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "Hate Crime"
+author: "Boping Xia, Mingkang Yuan"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
