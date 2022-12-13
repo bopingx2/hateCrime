@@ -1,7 +1,7 @@
 # Data 
 
 ```{r}
-hate = read.csv("~/Downloads/hate_crime/hate_crime.csv")
+hate = read.csv("resource/hate_crime.csv")
 dim(hate)
 names(hate)
 ```
