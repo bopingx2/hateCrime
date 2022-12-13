@@ -1,14 +1,16 @@
 # Data 
 
-## Sources
-
-## Cleaning / transformation
-
 ```{r}
 hate = read.csv("~/Downloads/hate_crime/hate_crime.csv")
 dim(hate)
 names(hate)
 ```
+
+## Sources
+
+## Cleaning / transformation
+
+
 
 
 ## Missing value analysis
