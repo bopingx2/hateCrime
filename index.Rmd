@@ -6,4 +6,12 @@ site: bookdown::bookdown_site
 ---
 
 # Introduction
-test
+Since the coronavirus pandemic began, hate or discriminatory crimes and incidents against the Asian-American community have increased. The Center for the Study Of Hate & Extremism at Cal State San Bernardino reported in a study analyzing police data that in 2020, relative to 2019, hate crimes against Asian Americans increased 145% in the 18 largest U.S. cities.[Center for the Study of Hate and Extremism](https://www.csusb.edu/hate-and-extremism-center) Americans have held rallies and protests in the wake of the shooting in Atlanta that left six Asian women and two women dead. This series of events actually belong to the hated prime. The Federal Bureau of Investigation's (FBI) Uniform Crime Reporting (UCR) Program defines a hate crime as a committed criminal offense that is motivated, in whole or in part,  by the offender's bias(es).[Hate Crime FAQ] (https://s3-us-gov-west-1.amazonaws.com/cg-d4b776d0-d898-4153-90c8-8336f86bdfec/hate_crime_faqs.pdf) As international students studying in the United States, we are curious about the historical trajectory, structure, and causes of hate crimes in the United States because this topic is very important to us (as it relates to our life safety).  We will propose the following questions to study hate prime in the United States:
+
+1. What types of hate crimes were most common from 1991-2020?
+
+2. Which presidential administration had the highest/lowest hate crime incidents?
+
+3. The top hate crimes types throughout the history.
+
+4. Hate crime related to states .
