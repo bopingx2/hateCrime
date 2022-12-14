@@ -1,12 +1,14 @@
 # Data 
 
+
+
+## Sources
+
 ```{r}
 hate = read.csv("resource/hate_crime.csv")
 dim(hate)
 names(hate)
 ```
-
-## Sources
 
 ## Cleaning / transformation
 
