@@ -1,1 +1,63 @@
 # Results
+
+## Trends of hate crime
+
+The following shows the trend chart of the total number of reported hate crime cases with each year. As can be seen from the figure, hate crime case increased most sharply in 1991-1992, 1994-1995, 2000-2001 and 2019-2020. Conversely, from 1993-1994, 2001-2002, 2008-2009, 2012-2013, the decline was the most dramatic.
+
+From 2001 to 2014, the total number of hate crime cases showed a general trend of decline. However, from 2014 to 2020, the total number of hate crime cases in the United States increased dramatically.
+
+In the whole chart, 1991 had the lowest total number of hate crime cases. 2020 has the highest total number of hate crime cases. 
+
+We know that the year has something to do with how long a U.S. president has been in office, Based on this picture, we will answer the question of which presidential administration had the highest or lowest hate crime incidents in later chapters. 
+
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+library(plotly)
+year <- hate %>% select(DATA_YEAR) %>%
+ group_by(DATA_YEAR) %>%
+ summarize(count = sum(n()))
+
+#trends_plot = ggplot(year, aes(DATA_YEAR,count))+
+#  geom_line()+
+#  scale_x_continuous(breaks = c(1990, 1995, 2000, 2005, 2010, 2015, 2020))+
+#    labs(title="Total Hate Crime line chart for 1991-2020",x="Year", y = "Total case for reported Hate Crimes")+
+#  theme(plot.title = element_text(hjust = 0.5))+ theme_economist() 
+#trends_plot
+
+trends_plot<- plot_ly(year, x = year$DATA_YEAR, y = year$count)
+peak <- dplyr::filter(year, count == max(count))
+troughs <- dplyr::filter(year, count == min(count))
+second_peak = dplyr::filter(year, year == "2001")
+second_troughs = dplyr::filter(year, year == "2014")
+trends_plot %>%
+  add_lines(x = year$DATA_YEAR, y = year$count) %>%
+  layout(title = "Total Hate Crime line chart for 1991-2020",
+         showlegend = FALSE,xaxis = list(title = 'Year'), 
+         yaxis = list(title = 'Total case for reported Hate Crimes'))%>%
+  layout(annotations = list(x = peak$DATA_YEAR, y = peak$count, text = "First Peak", showarrow = T)) %>%
+  layout(annotations = list(x = troughs$DATA_YEAR, y = troughs$count, text = "First Trough", showarrow = T)) %>%
+  layout(annotations = list(x = second_peak$DATA_YEAR, y = second_peak$count, text = "Second Peak", showarrow = T))%>%
+  layout(annotations = list(x = second_troughs$DATA_YEAR, y = second_troughs$count, text = "Second Trough", showarrow = T))  
+
+
+```
+
+
+## Which groups of people are more vulnerable to attack?
+```{r}
+alltime <- hate %>% select(BIAS_DESC) %>%
+ group_by(BIAS_DESC) %>%
+ summarize(count = sum(n()))%>%
+ arrange(desc(count))%>% head(5)
+
+ggplot(alltime, aes(reorder(BIAS_DESC, (count)), count, fill = BIAS_DESC))+
+ geom_bar(stat = 'identity')+
+ xlab(label = 'Hate Crime')+
+ theme(axis.text.x = element_blank(), axis.ticks = element_blank())+
+ theme(legend.key.size = unit(x = 2, units = 'line'),
+       legend.text = element_text(size = 14),
+       legend.title = element_text(size = 15))
+```

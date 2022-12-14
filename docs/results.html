@@ -52,6 +52,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.4/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
 
 
 
@@ -82,7 +89,10 @@
 <li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning / transformation</a></li>
 <li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.3</b> Missing value analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a></li>
+<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a><ul>
+<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#trends-of-hate-crime"><i class="fa fa-check"></i><b>4.1</b> Trends of hate crime</a></li>
+<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#which-groups-of-people-are-more-vulnerable-to-attack"><i class="fa fa-check"></i><b>4.2</b> Which groups of people are more vulnerable to attack?</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
 <li class="divider"></li>
@@ -106,7 +116,20 @@
             <section class="normal" id="section-">
 <div id="results" class="section level1 hasAnchor">
 <h1><span class="header-section-number">Chapter 4</span> Results<a href="results.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="trends-of-hate-crime" class="section level2 hasAnchor">
+<h2><span class="header-section-number">4.1</span> Trends of hate crime<a href="results.html#trends-of-hate-crime" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The following shows the trend chart of the total number of reported hate crime cases with each year. As can be seen from the figure, hate crime case increased most sharply in 1991-1992, 1994-1995, 2000-2001 and 2019-2020. Conversely, from 1993-1994, 2001-2002, 2008-2009, 2012-2013, the decline was the most dramatic.</p>
+<p>From 2001 to 2014, the total number of hate crime cases showed a general trend of decline. However, from 2014 to 2020, the total number of hate crime cases in the United States increased dramatically.</p>
+<p>In the whole chart, 1991 had the lowest total number of hate crime cases. 2020 has the highest total number of hate crime cases.</p>
+<p>We know that the year has something to do with how long a U.S. president has been in office, Based on this picture, we will answer the question of which presidential administration had the highest or lowest hate crime incidents in later chapters.</p>
+<div id="htmlwidget-9553d762e48bd79835b9" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9553d762e48bd79835b9">{"x":{"visdat":{"9c3e27d08ff1":["function () ","plotlyVisDat"]},"cur_data":"9c3e27d08ff1","attrs":{"9c3e27d08ff1":{"x":[1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[4589,6667,7608,5954,7950,8790,8107,7902,7944,8219,9730,7485,7545,7685,7411,7715,7625,8039,6613,6633,6299,6594,6044,5599,5871,6276,7321,7171,7892,10299],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Total Hate Crime line chart for 1991-2020","showlegend":false,"xaxis":{"domain":[0,1],"automargin":true,"title":"Year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Total case for reported Hate Crimes"},"annotations":[{"x":2020,"y":10299,"text":"First Peak","showarrow":true},{"x":1991,"y":4589,"text":"First Trough","showarrow":true},{"x":2001,"y":9730,"text":"Second Peak","showarrow":true},{"x":2014,"y":5599,"text":"Second Trough","showarrow":true}],"hovermode":"closest"},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[4589,6667,7608,5954,7950,8790,8107,7902,7944,8219,9730,7485,7545,7685,7411,7715,7625,8039,6613,6633,6299,6594,6044,5599,5871,6276,7321,7171,7892,10299],"type":"scatter","mode":"lines","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="which-groups-of-people-are-more-vulnerable-to-attack" class="section level2 hasAnchor">
+<h2><span class="header-section-number">4.2</span> Which groups of people are more vulnerable to attack?<a href="results.html#which-groups-of-people-are-more-vulnerable-to-attack" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 
+</div>
 </div>
             </section>
 
