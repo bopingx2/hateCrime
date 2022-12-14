@@ -7,7 +7,7 @@ sources
 cleaning-transformation
 missing-value-analysis
 results
-interactive-component
-conclusion
 trends-of-hate-crime
 which-groups-of-people-are-more-vulnerable-to-attack
+interactive-component
+conclusion
