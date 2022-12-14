@@ -10,15 +10,15 @@ Since the coronavirus pandemic began, hate or discriminatory crimes and incident
 
 1. What are the trends of hate crimes in the last 30 years? 
 
-2. Which presidential administration had the highest or lowest hate crime incidents?
+2. Which groups of people were attacked the most?
 
-3. What types of hate crimes (Offense Type) were most common in the last 30 years?
+3. The relationship between the race of the attacker and the race of the attacked.
 
-4. Which groups of people are more vulnerable to attack?
+4. What types of hate crimes (Offense Type) were most common in the last 30 years?
 
 5. Which groups of people are more likely to hate crime?
 
-6. The relationship between the race of the attacker and the race of the attacked.
+6. Which presidential administration had the highest or lowest hate crime incidents?
 
 7. The relationship between total hate crime and month.
 

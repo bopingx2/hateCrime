@@ -19,6 +19,7 @@ Although FBI provided a very large and detailed dataset, it contains several iss
 ## Cleaning / transformation
 
 ```{r}
+library(tidyverse)
 hate_clean <- hate |>
   select(c(INCIDENT_ID, STATE_NAME, REGION_NAME, INCIDENT_DATE,
            OFFENDER_RACE, OFFENSE_NAME, BIAS_DESC)) |>

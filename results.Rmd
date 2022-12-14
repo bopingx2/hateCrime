@@ -8,15 +8,18 @@ From 2001 to 2014, the total number of hate crime cases showed a general trend o
 
 In the whole chart, 1991 had the lowest total number of hate crime cases. 2020 has the highest total number of hate crime cases. 
 
-We know that the year has something to do with how long a U.S. president has been in office, Based on this picture, we will answer the question of which presidential administration had the highest or lowest hate crime incidents in the next subsection. 
+We know that the year has something to do with how long a U.S. president has been in office, Based on this picture, we will answer the question of which presidential administration had the highest or lowest hate crime incidents in the third subsection. 
 
 
 ```{r}
 library(tidyverse)
+library(lubridate)
 library(ggplot2)
 library(ggthemes)
 library(plotly)
-year <- hate %>% select(DATA_YEAR) %>%
+hate_plusyr = hate_clean %>% mutate(DATA_YEAR = year(INCIDENT_DATE))
+hate_plusyr_1 = hate_plusyr[!duplicated(hate_plusyr[,c('INCIDENT_ID','DATA_YEAR')]),]
+year <- hate_plusyr_1 %>% select(DATA_YEAR) %>%
  group_by(DATA_YEAR) %>%
  summarize(count = sum(n()))
 
@@ -30,8 +33,8 @@ year <- hate %>% select(DATA_YEAR) %>%
 trends_plot<- plot_ly(year, x = year$DATA_YEAR, y = year$count)
 peak <- dplyr::filter(year, count == max(count))
 troughs <- dplyr::filter(year, count == min(count))
-second_peak = dplyr::filter(year, year == "2001")
-second_troughs = dplyr::filter(year, year == "2014")
+second_peak = dplyr::filter(year, DATA_YEAR == 2001)
+second_troughs = dplyr::filter(year, DATA_YEAR == 2014)
 trends_plot %>%
   add_lines(x = year$DATA_YEAR, y = year$count) %>%
   layout(title = "Total Hate Crime line chart for 1991-2020",
@@ -46,14 +49,15 @@ trends_plot %>%
 ```
 
 
-## Which groups of people are more vulnerable to attack?
+## Which groups of people were attacked the most?
 
+The plot shows the number of total hate crimes for each prejudice. As can be seen from the Cleveland dot chart, black or African Americans are the groups most attacked by hate crime(almost 70,000 reported incidents). Asians, however, were the seventh most attacked group(over 7,000 reported incidents). Please note that our graph here only shows the total number of incidents involving people who have been attacked over the last 20 years, as opposed to which group is most vulnerable. We will take the results of the graph to analyse the relationship between the total number of people attacked in different categories under different presidents. 
 
 ```{r, fig.height = 10, fig.width = 8, fig.align = "center"}
-bias <- hate %>% select(BIAS_DESC) %>%
+bias <- hate_clean %>% select(BIAS_DESC) %>%
  group_by(BIAS_DESC) %>%
  summarize(count = sum(n()))%>%
- arrange(desc(count))%>% head(35)
+ arrange(desc(count))
 
 #ggplot(bias, aes(reorder(BIAS_DESC, (count)), count, fill = BIAS_DESC))+
 # geom_bar(stat = 'identity')+
@@ -70,14 +74,37 @@ ggplot(bias, aes(x = count, y = fct_reorder(BIAS_DESC, count))) +
 
 ```
 
+## The relationship between the race of the attacker and the race of the attacked.
+
+```{r, fig.height = 10, fig.width = 18, fig.align = "center"}
+bias_top_7 = bias %>% head(7)
+attacker_attacked_df = hate_clean %>% filter(BIAS_DESC %in% bias_top_7$BIAS_DESC) %>% left_join(bias_top_7)
+
+attacker_attacked_plot = ggplot(attacker_attacked_df, aes(x=fct_rev(fct_reorder(BIAS_DESC,count,.desc = TRUE)), fill = OFFENDER_RACE)) +
+  geom_bar(position = "dodge") +
+  ggtitle("Offender race per Prejudice") +
+  coord_flip() +
+  ylab("Hate Crime cases") + xlab("Prejudice")+
+  theme(plot.title = element_text(hjust = 0.5))+ labs(colour = "Offender Race") +theme(legend.key.size = unit(x = 2, units = 'line'),
+       legend.text = element_text(size =15),
+       legend.title = element_text(size = 18),title = element_text(size = 30)) +theme(strip.text.x = element_text(size = 25))+
+theme(axis.text.x=element_text(size=10),axis.text.y=element_text(size=15))+theme(legend.position = c(0.8, 0.3))+ theme(legend.background = element_rect(fill="lightblue",
+                                  linetype="solid", 
+                                  colour ="darkblue"))
+
+attacker_attacked_plot
+```
+
+
+
 
 
 ## Which presidential administration had the highest or lowest hate crime rate?
 
-Because each U.S. president has a different number of years in office, it would be unfair to compare total hate crime cases here. So we divided the number of hate crime cases during each president's tenure by the number of years in office to get the hate crime rate for each president. We found that Donald Trum had the highest hate prime rate and George Bush(1st term) had the lowest. But the difference between the three presidents with the highest rates is not obvious.
+Because each U.S. president has a different number of years in office, it would be unfair to compare total hate crime cases here. So we divided the number of hate crime cases during each president's tenure by the number of years in office to get the hate crime rate for each president. We found that Donald Trump had the highest hate prime rate and George Bush(1st term) had the lowest. But the difference between the three presidents with the highest rates is not obvious.
 
 ```{r}
-president_ds <- hate %>% 
+president_ds <- hate_plusyr %>% 
 mutate(president = as.factor(case_when(DATA_YEAR < 1993 ~ 'George Bush(1st term)',
                                        DATA_YEAR >= 1993 & DATA_YEAR <= 2000 ~ 'Bill Clinton',
                                        DATA_YEAR >= 2001 & DATA_YEAR <= 2008 ~ 'George Bush(2nd term)',
@@ -107,9 +134,9 @@ rate_plot
 
 At the same time, we can also draw a trend chart of the changing relationship of prejudice over time during the tenure of different presidents.
 
-```{r, fig.height = 10, fig.width = 20, fig.align = "center"}
+```{r, fig.height = 10, fig.width = 24, fig.align = "center"}
 bias_top_5 = bias %>% head(5)
-president_prejudice <- hate %>% 
+president_prejudice <- hate_plusyr %>% 
 mutate(president = as.factor(case_when(DATA_YEAR < 1993 ~ '1George Bush(1st term)',
                                        DATA_YEAR >= 1993 & DATA_YEAR <= 2000 ~ '2Bill Clinton',
                                        DATA_YEAR >= 2001 & DATA_YEAR <= 2008 ~ '3George Bush(2nd term)',
@@ -119,22 +146,49 @@ mutate(president = as.factor(case_when(DATA_YEAR < 1993 ~ '1George Bush(1st term
   select(DATA_YEAR,president,BIAS_DESC) 
 
 predident_names <- c(
-                    `1George Bush(1st term)` = "George Bush
-(1st term)",
+                    `1George Bush(1st term)` = "GB
+1st",
                     `2Bill Clinton` = "Bill Clinton",
                     `3George Bush(2nd term)` = "George Bush(2nd term)",
                     `4Barack Obama` = "Barack Obama",
-                    `5Donald Trump` = "Donald Trump"
+                    `5Donald Trump` = "Donald 
+Trump"
                     )
 
 president_prejudice_plot = ggplot(president_prejudice, aes(DATA_YEAR, color = BIAS_DESC))+
- geom_line(stat = 'count')+
+ geom_line(stat = 'count',lwd = 3)+
  facet_grid(.~president, scales = 'free', space = 'free',labeller = as_labeller(predident_names))+
  scale_x_continuous(breaks = seq(1991, 2020, 1))+ labs(title="Relationship between prejudice over time during presidency", x = "Year", y = "Hate Crime Cases")+  theme_linedraw() +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5))+ labs(colour = "Prejudice") +theme(legend.key.size = unit(x = 2, units = 'line'),
+       legend.text = element_text(size =20),
+       legend.title = element_text(size = 25),title = element_text(size = 30)) +theme(strip.text.x = element_text(size = 25))+
+theme(legend.position = "top",axis.text.x=element_text(size=15),axis.text.y=element_text(size=15))
 
 president_prejudice_plot
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

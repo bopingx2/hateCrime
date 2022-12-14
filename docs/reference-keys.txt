@@ -9,5 +9,6 @@ missing-value-analysis
 results
 trends-of-hate-crime
 which-groups-of-people-are-more-vulnerable-to-attack
+which-presidential-administration-had-the-highest-or-lowest-hate-crime-rate
 interactive-component
 conclusion
