@@ -2,13 +2,16 @@
 
 ## Sources
 
+Our original data file `Hate_Crime.csv` is from FBI Crime data Explore (CDE) (https://crime-data-explorer.fr.cloud.gov/pages/home). According the methodology provided along with the file, FBI
 ```{r}
+library(tidyverse)
 hate = read.csv("resource/hate_crime.csv")
 dim(hate)
 names(hate)
 ```
 
 ## Cleaning / transformation
+
 
 ```{r}
 hate_clean <- hate |>
