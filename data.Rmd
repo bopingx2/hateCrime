@@ -1,6 +1,4 @@
-# Data 
-
-
+# Data
 
 ## Sources
 
@@ -12,8 +10,30 @@ names(hate)
 
 ## Cleaning / transformation
 
-
-
+```{r}
+hate_clean <- hate |>
+  select(c(INCIDENT_ID, STATE_NAME, REGION_NAME, INCIDENT_DATE,
+           OFFENDER_RACE, OFFENSE_NAME, BIAS_DESC)) |>
+  separate_rows(BIAS_DESC, sep = ";") |>
+  mutate(BIAS_DESC =
+           replace(BIAS_DESC, 
+                   BIAS_DESC == "Anti-Lesbian (Female)",
+                   "Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)")) |>
+  mutate(BIAS_DESC =
+           replace(BIAS_DESC, 
+                   BIAS_DESC == "Anti-Gay (Male)",
+                   "Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)")) |>
+  mutate(BIAS_DESC =
+           replace(BIAS_DESC, 
+                   BIAS_DESC == "Anti-Bisexual",
+                   "Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)")) |>
+  mutate(BIAS_DESC =
+           replace(BIAS_DESC, 
+                   BIAS_DESC == "Anti-Transgender",
+                   "Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)")) |>
+  separate_rows(OFFENSE_NAME, sep = ";") |>
+  mutate(INCIDENT_DATE = as.Date(INCIDENT_DATE, "%d-%b-%y"))
+  
+```
 
 ## Missing value analysis
-
