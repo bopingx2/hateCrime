@@ -2,16 +2,21 @@
 
 ## Sources
 
-Our original data file `Hate_Crime.csv` is from FBI Crime data Explore (CDE) (https://crime-data-explorer.fr.cloud.gov/pages/home). According to the description provided along with the file, the data was collected through FBI’s Uniform Crime Reporting (UCR) Program. UCR is a program aimed 
+Our original data file `Hate_Crime.csv` is from FBI Crime data Explorer (CDE) (<https://crime-data-explorer.fr.cloud.gov/pages/home>). According to the description provided along with the file, the data was collected through FBI's Uniform Crime Reporting (UCR) Program. UCR is a program aimed to provide reliable crime statistics for public use. There are approximately 18,000 law enforcement units in the US participate in this program. Each unit voluntarily send their data through National Incident-Based Reporting System (NIBRS), which allows them provide detailed information of a crime such as offenders' bias against specific social identity. At the end of each year, FBI will release the data a year before with multiple section through CDE and Hate Crime Statistics is a dedicated collection along with others.
+
 ```{r}
 library(tidyverse)
 hate = read.csv("resource/hate_crime.csv")
-dim(hate)
+sprintf("The dimension of the dataset is %d rows and %d columns.", dim(hate)[1], dim(hate)[2])
+print("The columns' names are:")
 names(hate)
 ```
 
-## Cleaning / transformation
+As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. `INCIDENT_ID`, `ADULT_VICTIM_COUNT`, `JUVENILE_VICTIM_COUNT`, `TOTAL_OFFENDER_COUNT`, `ADULT_OFFENDER_COUNT`, `JUVENILE_OFFENDER_COUNT`, `VICTIM_COUNT`, and `TOTAL_INDIVIDUAL_VICTIMS` are continuous variables. `DATA_YEAR` and `INCIDENT_DATE` are date variables. 
 
+Although FBI provided a very large and detailed dataset, it contains several issues. The most important one, as stated by FBI, because the motivation of a crime is a subjective factor, it is difficult to determine whether the crime is because of offenders' bias. Hence, law enforcement conclude a hate crime only if there are sufficient evidence to prove it. This resulting in underestimating overall occurrence of hate crimes but it could guarantee the accuracy of our analysis. As we understanding and interpreting dataset, we found some problem regarding the quality of the dataset. There are multiple columns contains value of empty string instead of `NA`, which leads to a erroneous missing value analysis. In the `OFFENSE_NAME` and `BIAS_DESC` column, some observation contains multiple variables. These situations are indicated in `MULTIPLE_OFFENSE` and `MULTIPLE_BIAS`. It is reasonable for a crime aiming to multiple group of people with several offense, but it creates obstacles when analyzing offense type and bias. There are other problems, like `TOTAL_OFFENDER_COUNT` contains a huge portion of 0s and adults and juveniles partition are not reported before 2011. Since we dropped these columns, we do not dig into the reason of these problems.
+
+## Cleaning / transformation
 
 ```{r}
 hate_clean <- hate |>
