@@ -128,8 +128,8 @@
 <div id="sources" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sources<a href="data.html#sources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Our original data file <code>Hate_Crime.csv</code> is from FBI Crime data Explorer (CDE) (<a href="https://crime-data-explorer.fr.cloud.gov/pages/home" class="uri">https://crime-data-explorer.fr.cloud.gov/pages/home</a>). According to the description provided along with the file, the data was collected through FBI’s Uniform Crime Reporting (UCR) Program. UCR is a program aimed to provide reliable crime statistics for public use. There are approximately 18,000 law enforcement units in the US participate in this program. Each unit voluntarily send their data through National Incident-Based Reporting System (NIBRS), which allows them provide detailed information of a crime such as offenders’ bias against specific social identity. At the end of each year, FBI will release the data a year before with multiple section through CDE and Hate Crime Statistics is a dedicated collection along with others.</p>
-<pre><code>## [1] &quot;The dimension of the dataset is 219577 rows and 28 columns.&quot;</code></pre>
-<pre><code>## [1] &quot;The columns&#39; names are:&quot;</code></pre>
+<pre><code>## The dimension of the dataset is 219577 rows and 28 columns.</code></pre>
+<pre><code>## The columns&#39; names are:</code></pre>
 <pre><code>##  [1] &quot;INCIDENT_ID&quot;              &quot;DATA_YEAR&quot;                &quot;ORI&quot;                     
 ##  [4] &quot;PUB_AGENCY_NAME&quot;          &quot;PUB_AGENCY_UNIT&quot;          &quot;AGENCY_TYPE_NAME&quot;        
 ##  [7] &quot;STATE_ABBR&quot;               &quot;STATE_NAME&quot;               &quot;DIVISION_NAME&quot;           
@@ -140,11 +140,36 @@
 ## [22] &quot;OFFENSE_NAME&quot;             &quot;TOTAL_INDIVIDUAL_VICTIMS&quot; &quot;LOCATION_NAME&quot;           
 ## [25] &quot;BIAS_DESC&quot;                &quot;VICTIM_TYPES&quot;             &quot;MULTIPLE_OFFENSE&quot;        
 ## [28] &quot;MULTIPLE_BIAS&quot;</code></pre>
-<p>As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. <code>INCIDENT_ID</code>, <code>ADULT_VICTIM_COUNT</code>, <code>JUVENILE_VICTIM_COUNT</code>, <code>TOTAL_OFFENDER_COUNT</code>, <code>ADULT_OFFENDER_COUNT</code>, <code>JUVENILE_OFFENDER_COUNT</code>, <code>VICTIM_COUNT</code>, and <code>TOTAL_INDIVIDUAL_VICTIMS</code> are continuous variables. <code>DATA_YEAR</code> and <code>INCIDENT_DATE</code> are date variables.</p>
+<p>As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. <code>INCIDENT_ID</code>, <code>ADULT_VICTIM_COUNT</code>, <code>JUVENILE_VICTIM_COUNT</code>, <code>TOTAL_OFFENDER_COUNT</code>, <code>ADULT_OFFENDER_COUNT</code>, <code>JUVENILE_OFFENDER_COUNT</code>, <code>VICTIM_COUNT</code>, and <code>TOTAL_INDIVIDUAL_VICTIMS</code> are continuous variables. <code>DATA_YEAR</code> and <code>INCIDENT_DATE</code> should be date variables, but they are stored in <code>int</code> and <code>chr</code>.</p>
 <p>Although FBI provided a very large and detailed dataset, it contains several issues. The most important one, as stated by FBI, because the motivation of a crime is a subjective factor, it is difficult to determine whether the crime is because of offenders’ bias. Hence, law enforcement conclude a hate crime only if there are sufficient evidence to prove it. This resulting in underestimating overall occurrence of hate crimes but it could guarantee the accuracy of our analysis. As we understanding and interpreting dataset, we found some problem regarding the quality of the dataset. There are multiple columns contains value of empty string instead of <code>NA</code>, which leads to a erroneous missing value analysis. In the <code>OFFENSE_NAME</code> and <code>BIAS_DESC</code> column, some observation contains multiple variables. These situations are indicated in <code>MULTIPLE_OFFENSE</code> and <code>MULTIPLE_BIAS</code>. It is reasonable for a crime aiming to multiple group of people with several offense, but it creates obstacles when analyzing offense type and bias. There are other problems, like <code>TOTAL_OFFENDER_COUNT</code> contains a huge portion of 0s and adults and juveniles partition are not reported before 2011. Since we dropped these columns, we do not dig into the reason of these problems.</p>
 </div>
 <div id="cleaning-transformation" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Cleaning / transformation<a href="data.html#cleaning-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>First cleaning step is to extract columns needed for out target. We have already mentioned our goal in the introduction section, here we just select related column and reduced it to 7 columns.</p>
+<pre><code>## The dimension of the dataset is 219577 rows and 7 columns.</code></pre>
+<pre><code>## The columns&#39; names are:</code></pre>
+<pre><code>## [1] &quot;INCIDENT_ID&quot;   &quot;STATE_NAME&quot;    &quot;REGION_NAME&quot;   &quot;INCIDENT_DATE&quot; &quot;OFFENDER_RACE&quot; &quot;OFFENSE_NAME&quot; 
+## [7] &quot;BIAS_DESC&quot;</code></pre>
+<p>Next we will split the row with multiple <code>BIAS_DESC</code> and <code>OFFENSE_NAME</code>. Before the split, the unique entries in <code>BIAS_DESC</code> and <code>OFFENSE_NAME</code> are 279 and 353. After the split, the unique entries in <code>BIAS_DESC</code> and <code>OFFENSE_NAME</code> are reduced to 35 and 48. Note that this will create multiple rows for one crime and can leads to over counting. We will only count crime with distinct <code>INCIDENT_ID</code> to overcome this issue.</p>
+<pre><code>## BEFORE</code></pre>
+<pre><code>## The unique BIAS_DESC counts is: 279.</code></pre>
+<pre><code>## The unique OFFENSE_NAME counts is: 353.</code></pre>
+<pre><code>## AFTER</code></pre>
+<pre><code>## The unique BIAS_DESC counts is: 35.</code></pre>
+<pre><code>## The unique OFFENSE_NAME counts is: 48.</code></pre>
+<pre><code>## The dimension of the dataset is 228912 rows and 7 columns.</code></pre>
+<p>A strange pattern in <code>BIAS_DESC</code> is that while it contains <code>Anti-Lesbian (Female)</code>, <code>Anti-Gay (Male)</code>, <code>Anti-Bisexual</code>, and <code>Anti-Transgender</code> separately, it also has a entry <code>Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)</code>. We will combine the separate listings into the mixed one.</p>
+<pre><code>## The unique BIAS_DESC counts is: 31.</code></pre>
+<p>The <code>INCIDENT_DATE</code> is stored as <code>character</code> class. We need to change it into <code>Date</code> class.</p>
+<pre><code>## BEFORE</code></pre>
+<pre><code>## The class of INCIDENT_DATE is : character.</code></pre>
+<pre><code>## AFTER</code></pre>
+<pre><code>## The class of INCIDENT_DATE is : Date.</code></pre>
+<p>Last step is to process empty string. We consider it as <code>NA</code>. And because empty string only happens in categorical variables, we will replace it with <code>Unknown</code>.</p>
+<pre><code>## BEFORE</code></pre>
+<pre><code>## The number of rows with empty string is : 20.</code></pre>
+<pre><code>## AFTER</code></pre>
+<pre><code>## The number of rows with empty string is : 0.</code></pre>
 </div>
 <div id="missing-value-analysis" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Missing value analysis<a href="data.html#missing-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
