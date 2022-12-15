@@ -8,7 +8,10 @@ cleaning-transformation
 missing-value-analysis
 results
 trends-of-hate-crime
-which-groups-of-people-are-more-vulnerable-to-attack
+which-groups-of-people-were-attacked-the-most
+the-relationship-between-the-race-of-the-attacker-and-the-race-of-the-attacked.
 which-presidential-administration-had-the-highest-or-lowest-hate-crime-rate
+which-groups-of-people-have-the-highest-hate-crime-cases
+what-types-of-hate-crimes-offense-type-were-most-common-in-the-last-30-years
 interactive-component
 conclusion

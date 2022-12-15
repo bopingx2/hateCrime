@@ -37,7 +37,7 @@ second_peak = dplyr::filter(year, DATA_YEAR == 2001)
 second_troughs = dplyr::filter(year, DATA_YEAR == 2014)
 trends_plot %>%
   add_lines(x = year$DATA_YEAR, y = year$count) %>%
-  layout(title = "Total Hate Crime line chart for 1991-2020",
+  layout(title = "Total Hate Crime Line Chart for 1991-2020",
          showlegend = FALSE,xaxis = list(title = 'Year'), 
          yaxis = list(title = 'Total case for reported Hate Crimes'))%>%
   layout(annotations = list(x = peak$DATA_YEAR, y = peak$count, text = "First Peak", showarrow = T)) %>%
@@ -69,12 +69,14 @@ bias <- hate_clean %>% select(BIAS_DESC) %>%
 
 ggplot(bias, aes(x = count, y = fct_reorder(BIAS_DESC, count))) +
   geom_point(color = "blue") +
-  labs(title="Cleveland dot plot of total Hate Crimes per Prejudice", x = "Hate Crime cases", y = "Prejudice")+  theme_linedraw() +
+  labs(title="Cleveland Dot Plot of Total Hate Crimes per Prejudice", x = "Hate Crime cases", y = "Prejudice")+  theme_linedraw() +
   theme(plot.title = element_text(hjust = 0.5))
 
 ```
 
 ## The relationship between the race of the attacker and the race of the attacked.
+
+The following graph shows the relationship between the race of the attacker and the race of the attacked. Note we will ignore the unknown offender race in this case. We found that when Black or African american people were attacked, white people attacked them the most, by a significant margin. We also found that whites were the most aggressive toward all groups except toward Jewish. The majority of Anti-White hate crimes were committed by Black people and White people. 
 
 ```{r, fig.height = 10, fig.width = 18, fig.align = "center"}
 bias_top_7 = bias %>% head(7)
@@ -82,15 +84,15 @@ attacker_attacked_df = hate_clean %>% filter(BIAS_DESC %in% bias_top_7$BIAS_DESC
 
 attacker_attacked_plot = ggplot(attacker_attacked_df, aes(x=fct_rev(fct_reorder(BIAS_DESC,count,.desc = TRUE)), fill = OFFENDER_RACE)) +
   geom_bar(position = "dodge") +
-  ggtitle("Offender race per Prejudice") +
+  ggtitle("Offender Race per Prejudice (1991-2020)") +
   coord_flip() +
   ylab("Hate Crime cases") + xlab("Prejudice")+
-  theme(plot.title = element_text(hjust = 0.5))+ labs(colour = "Offender Race") +theme(legend.key.size = unit(x = 2, units = 'line'),
+  theme(plot.title = element_text(hjust = 0.5)) +theme(legend.key.size = unit(x = 2, units = 'line'),
        legend.text = element_text(size =15),
        legend.title = element_text(size = 18),title = element_text(size = 30)) +theme(strip.text.x = element_text(size = 25))+
-theme(axis.text.x=element_text(size=10),axis.text.y=element_text(size=15))+theme(legend.position = c(0.8, 0.3))+ theme(legend.background = element_rect(fill="lightblue",
+theme(axis.text.x=element_text(size=15),axis.text.y=element_text(size=18))+theme(legend.position = c(0.8, 0.3))+ theme(legend.background = element_rect(fill="lightblue",
                                   linetype="solid", 
-                                  colour ="darkblue"))
+                                  colour ="darkblue")) +guides(fill=guide_legend(title="Offender Race"))
 
 attacker_attacked_plot
 ```
@@ -124,7 +126,7 @@ rate_plot = ggplot(president_ds,aes(x=fct_rev(fct_reorder(president,rate,.desc =
   geom_bar(stat = "identity",fill = "cornflowerblue") +
   ggtitle("Hate Crime rate per Administration") +
   coord_flip() +
-  ylab("Hate Crime rate (per year)") + xlab("President")+
+  ylab("Hate Crime Rate (per year)") + xlab("President")+
 #  theme(panel.grid.major.x = element_blank())+
   theme(plot.title = element_text(hjust = 0.5))+ theme_economist() +
   geom_text(aes(label=rate), vjust=-0.3, size=3.5, color="black")
@@ -132,7 +134,7 @@ rate_plot = ggplot(president_ds,aes(x=fct_rev(fct_reorder(president,rate,.desc =
 rate_plot
 ```
 
-At the same time, we can also draw a trend chart of the changing relationship of prejudice over time during the tenure of different presidents.
+At the same time, we can also draw a trend chart of the changing relationship of prejudice over time during the tenure of different presidents. We found an increase in all kinds of prejudice during the first George Bush administration. During the period of Bill Clinton, the general trend of anti Black or African american was up, while the general trend of anti White was down. All kinds of prejudice in the second George Bush years were in a lull (neither rising nor falling). The overall trend of anti-Black or African american decline under Barack Obama administration is different from any other period. While anti-Black or African american trends have risen sharply under Donald Trump years, other kinds of prejudice have crept up.
 
 ```{r, fig.height = 10, fig.width = 24, fig.align = "center"}
 bias_top_5 = bias %>% head(5)
@@ -158,7 +160,7 @@ Trump"
 president_prejudice_plot = ggplot(president_prejudice, aes(DATA_YEAR, color = BIAS_DESC))+
  geom_line(stat = 'count',lwd = 3)+
  facet_grid(.~president, scales = 'free', space = 'free',labeller = as_labeller(predident_names))+
- scale_x_continuous(breaks = seq(1991, 2020, 1))+ labs(title="Relationship between prejudice over time during presidency", x = "Year", y = "Hate Crime Cases")+  theme_linedraw() +
+ scale_x_continuous(breaks = seq(1991, 2020, 1))+ labs(title="Relationship Between Prejudice over Time During Presidency", x = "Year", y = "Hate Crime Cases")+  theme_linedraw() +
   theme(plot.title = element_text(hjust = 0.5))+ labs(colour = "Prejudice") +theme(legend.key.size = unit(x = 2, units = 'line'),
        legend.text = element_text(size =20),
        legend.title = element_text(size = 25),title = element_text(size = 30)) +theme(strip.text.x = element_text(size = 25))+
@@ -169,23 +171,77 @@ president_prejudice_plot
 
 
 
+## Which groups of people have the highest hate crime cases?
+
+Note here we ignore the unknown case since it tells nothing. Through this pie chart, we can find that 70.7 percent of all reported hate crime cases were committed by White people, which is nearly 45% higher than the black or African American group that ranks second. We can find that Asians are less likely to be offenders.
+
+```{r, fig.align = "center"}
+offender_df = hate_clean %>%select(OFFENDER_RACE) %>%
+ group_by(OFFENDER_RACE) %>%
+ summarize(count = sum(n())) %>%
+ arrange(desc(count))
+offender_df = offender_df[2:7,]
+colors <- c('rgb(211,94,96)', 'rgb(128,133,133)', 'rgb(144,103,167)', 'rgb(171,104,87)', 'rgb(114,147,203)','rgb(46,8,8)','rgb(135,20,93)')
+
+fig <- plot_ly(offender_df, labels = ~OFFENDER_RACE, values = ~count, type = 'pie',
+        textposition = 'inside',
+        textinfo = 'label+percent',
+        insidetextfont = list(color = '#FFFFFF'),
+        hoverinfo = 'text',
+        marker = list(colors = colors,
+                      line = list(color = '#FFFFFF', width = 1)),
+                      #The 'pull' attribute can also be used to create space between the sectors
+        showlegend = TRUE)
+fig <- fig %>% layout(title = 'Number of Offenders by Race (Percentage) (1991-2020)',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+fig
+```
 
 
 
 
+   
+## What types of hate crimes (Offense Type) were most common in the last 30 years?
+
+This image shows all types of offense type. We found that "Destruction/Damage/Vandalism of Property", "Intimidation", "Simple Assault" , "Aggravated Assault" are the most popular. And the total number of incidents is far ahead of the latter category. We will use these four key offense type to draw the relationship between Offense type and Prejudice.
+
+```{r, fig.height = 10, fig.width = 8}
+offense_type <- hate_clean %>% select(OFFENSE_NAME) %>%
+ group_by(OFFENSE_NAME) %>%
+ summarize(count = sum(n()))%>%
+ arrange(desc(count))
+
+ggplot(offense_type, aes(x = count, y = fct_reorder(OFFENSE_NAME, count))) +
+  geom_point(color = "blue") +
+  labs(title="Total Hate Crimes per Offense Type (1991-2020)", x = "Hate Crime Cases", y = "Offense Type")+  theme_linedraw() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+We took the top four offense types in the figure above and the top seven prejudice types together to draw this grouped bar chart. This chart shows the total amount of hate crimes that were motivated by each type of prejudice for each type of hate crime. The majority of each type of hate crime is motivated by an Anti-Black or African American prejudice, with "Intimidation" and "Destruction/Damage/Vandalism of Property" being the most common type of hate crimes motivated by this prejudice. "Anti-Black or African American" prejudice has the highest percentage in every offense type. We found that the percentage of Anti-Jewish prejudice in the "Destruction/Damage/Vandalism of Property" offense type is particularly high. The LGBT community also makes up a significant portion of every offense type. 
+
+
+```{r, fig.height = 10, fig.width = 8}
+offense_type <- hate_clean %>% select(OFFENSE_NAME) %>%
+ group_by(OFFENSE_NAME) %>%
+ summarize(count = sum(n()))%>%
+ arrange(desc(count))
+
+offensetype_top_4 = offense_type %>% head(4)
+offensetype_df = hate_clean %>% filter(OFFENSE_NAME %in% offensetype_top_4$OFFENSE_NAME) %>%
+  filter(BIAS_DESC %in% bias_top_7$BIAS_DESC)  %>% left_join(offensetype_top_4)
 
 
 
+fig <- offensetype_df %>% count(OFFENSE_NAME, BIAS_DESC) %>% left_join(offensetype_top_4)
+fig <- fig %>% plot_ly(x = ~fct_rev(fct_reorder(OFFENSE_NAME,count,.desc = FALSE)), y = ~n, color = ~BIAS_DESC)%>%layout(title = 'Total Prejudice per Offense Type (1991-2020)', plot_bgcolor = "#e5ecf6", xaxis = list(title = 'Offense Type'), 
+         yaxis = list(title = 'Hate Crime Cases'), legend = list(title=list(text='<b> Type of Prejudice </b>')))
 
+fig
 
-
-
-
-
-
-
-
-
+```
 
 
 
