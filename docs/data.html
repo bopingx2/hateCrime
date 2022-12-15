@@ -99,6 +99,8 @@
 <li class="chapter" data-level="4.4" data-path="results.html"><a href="results.html#which-presidential-administration-had-the-highest-or-lowest-hate-crime-rate"><i class="fa fa-check"></i><b>4.4</b> Which presidential administration had the highest or lowest hate crime rate?</a></li>
 <li class="chapter" data-level="4.5" data-path="results.html"><a href="results.html#which-groups-of-people-have-the-highest-hate-crime-cases"><i class="fa fa-check"></i><b>4.5</b> Which groups of people have the highest hate crime cases?</a></li>
 <li class="chapter" data-level="4.6" data-path="results.html"><a href="results.html#what-types-of-hate-crimes-offense-type-were-most-common-in-the-last-30-years"><i class="fa fa-check"></i><b>4.6</b> What types of hate crimes (Offense Type) were most common in the last 30 years?</a></li>
+<li class="chapter" data-level="4.7" data-path="results.html"><a href="results.html#the-relationship-between-total-hate-crime-and-month."><i class="fa fa-check"></i><b>4.7</b> The relationship between total hate crime and month.</a></li>
+<li class="chapter" data-level="4.8" data-path="results.html"><a href="results.html#the-relationship-between-hate-crime-cases-and-region."><i class="fa fa-check"></i><b>4.8</b> The relationship between hate crime cases and region.</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
@@ -125,15 +127,21 @@
 <h1><span class="header-section-number">Chapter 3</span> Data<a href="data.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="sources" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sources<a href="data.html#sources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Our original data file <code>Hate_Crime.csv</code> is from FBI Crime data Explore (CDE) (<a href="https://crime-data-explorer.fr.cloud.gov/pages/home" class="uri">https://crime-data-explorer.fr.cloud.gov/pages/home</a>). According to the description provided along with the file, the data was collected through FBI’s Uniform Crime Reporting (UCR) Program. UCR is a program aimed</p>
-<pre><code>## [1] 219577     28</code></pre>
-<pre><code>##  [1] &quot;INCIDENT_ID&quot;              &quot;DATA_YEAR&quot;                &quot;ORI&quot;                      &quot;PUB_AGENCY_NAME&quot;         
-##  [5] &quot;PUB_AGENCY_UNIT&quot;          &quot;AGENCY_TYPE_NAME&quot;         &quot;STATE_ABBR&quot;               &quot;STATE_NAME&quot;              
-##  [9] &quot;DIVISION_NAME&quot;            &quot;REGION_NAME&quot;              &quot;POPULATION_GROUP_CODE&quot;    &quot;POPULATION_GROUP_DESC&quot;   
-## [13] &quot;INCIDENT_DATE&quot;            &quot;ADULT_VICTIM_COUNT&quot;       &quot;JUVENILE_VICTIM_COUNT&quot;    &quot;TOTAL_OFFENDER_COUNT&quot;    
-## [17] &quot;ADULT_OFFENDER_COUNT&quot;     &quot;JUVENILE_OFFENDER_COUNT&quot;  &quot;OFFENDER_RACE&quot;            &quot;OFFENDER_ETHNICITY&quot;      
-## [21] &quot;VICTIM_COUNT&quot;             &quot;OFFENSE_NAME&quot;             &quot;TOTAL_INDIVIDUAL_VICTIMS&quot; &quot;LOCATION_NAME&quot;           
-## [25] &quot;BIAS_DESC&quot;                &quot;VICTIM_TYPES&quot;             &quot;MULTIPLE_OFFENSE&quot;         &quot;MULTIPLE_BIAS&quot;</code></pre>
+<p>Our original data file <code>Hate_Crime.csv</code> is from FBI Crime data Explorer (CDE) (<a href="https://crime-data-explorer.fr.cloud.gov/pages/home" class="uri">https://crime-data-explorer.fr.cloud.gov/pages/home</a>). According to the description provided along with the file, the data was collected through FBI’s Uniform Crime Reporting (UCR) Program. UCR is a program aimed to provide reliable crime statistics for public use. There are approximately 18,000 law enforcement units in the US participate in this program. Each unit voluntarily send their data through National Incident-Based Reporting System (NIBRS), which allows them provide detailed information of a crime such as offenders’ bias against specific social identity. At the end of each year, FBI will release the data a year before with multiple section through CDE and Hate Crime Statistics is a dedicated collection along with others.</p>
+<pre><code>## [1] &quot;The dimension of the dataset is 219577 rows and 28 columns.&quot;</code></pre>
+<pre><code>## [1] &quot;The columns&#39; names are:&quot;</code></pre>
+<pre><code>##  [1] &quot;INCIDENT_ID&quot;              &quot;DATA_YEAR&quot;                &quot;ORI&quot;                     
+##  [4] &quot;PUB_AGENCY_NAME&quot;          &quot;PUB_AGENCY_UNIT&quot;          &quot;AGENCY_TYPE_NAME&quot;        
+##  [7] &quot;STATE_ABBR&quot;               &quot;STATE_NAME&quot;               &quot;DIVISION_NAME&quot;           
+## [10] &quot;REGION_NAME&quot;              &quot;POPULATION_GROUP_CODE&quot;    &quot;POPULATION_GROUP_DESC&quot;   
+## [13] &quot;INCIDENT_DATE&quot;            &quot;ADULT_VICTIM_COUNT&quot;       &quot;JUVENILE_VICTIM_COUNT&quot;   
+## [16] &quot;TOTAL_OFFENDER_COUNT&quot;     &quot;ADULT_OFFENDER_COUNT&quot;     &quot;JUVENILE_OFFENDER_COUNT&quot; 
+## [19] &quot;OFFENDER_RACE&quot;            &quot;OFFENDER_ETHNICITY&quot;       &quot;VICTIM_COUNT&quot;            
+## [22] &quot;OFFENSE_NAME&quot;             &quot;TOTAL_INDIVIDUAL_VICTIMS&quot; &quot;LOCATION_NAME&quot;           
+## [25] &quot;BIAS_DESC&quot;                &quot;VICTIM_TYPES&quot;             &quot;MULTIPLE_OFFENSE&quot;        
+## [28] &quot;MULTIPLE_BIAS&quot;</code></pre>
+<p>As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. <code>INCIDENT_ID</code>, <code>ADULT_VICTIM_COUNT</code>, <code>JUVENILE_VICTIM_COUNT</code>, <code>TOTAL_OFFENDER_COUNT</code>, <code>ADULT_OFFENDER_COUNT</code>, <code>JUVENILE_OFFENDER_COUNT</code>, <code>VICTIM_COUNT</code>, and <code>TOTAL_INDIVIDUAL_VICTIMS</code> are continuous variables. <code>DATA_YEAR</code> and <code>INCIDENT_DATE</code> are date variables.</p>
+<p>Although FBI provided a very large and detailed dataset, it contains several issues. The most important one, as stated by FBI, because the motivation of a crime is a subjective factor, it is difficult to determine whether the crime is because of offenders’ bias. Hence, law enforcement conclude a hate crime only if there are sufficient evidence to prove it. This resulting in underestimating overall occurrence of hate crimes but it could guarantee the accuracy of our analysis. As we understanding and interpreting dataset, we found some problem regarding the quality of the dataset. There are multiple columns contains value of empty string instead of <code>NA</code>, which leads to a erroneous missing value analysis. In the <code>OFFENSE_NAME</code> and <code>BIAS_DESC</code> column, some observation contains multiple variables. These situations are indicated in <code>MULTIPLE_OFFENSE</code> and <code>MULTIPLE_BIAS</code>. It is reasonable for a crime aiming to multiple group of people with several offense, but it creates obstacles when analyzing offense type and bias. There are other problems, like <code>TOTAL_OFFENDER_COUNT</code> contains a huge portion of 0s and adults and juveniles partition are not reported before 2011. Since we dropped these columns, we do not dig into the reason of these problems.</p>
 </div>
 <div id="cleaning-transformation" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Cleaning / transformation<a href="data.html#cleaning-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h2>

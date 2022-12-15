@@ -13,5 +13,7 @@ the-relationship-between-the-race-of-the-attacker-and-the-race-of-the-attacked.
 which-presidential-administration-had-the-highest-or-lowest-hate-crime-rate
 which-groups-of-people-have-the-highest-hate-crime-cases
 what-types-of-hate-crimes-offense-type-were-most-common-in-the-last-30-years
+the-relationship-between-total-hate-crime-and-month.
+the-relationship-between-hate-crime-cases-and-region.
 interactive-component
 conclusion

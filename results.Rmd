@@ -101,6 +101,7 @@ attacker_attacked_plot
 
 
 
+
 ## Which presidential administration had the highest or lowest hate crime rate?
 
 Because each U.S. president has a different number of years in office, it would be unfair to compare total hate crime cases here. So we divided the number of hate crime cases during each president's tenure by the number of years in office to get the hate crime rate for each president. We found that Donald Trump had the highest hate prime rate and George Bush(1st term) had the lowest. But the difference between the three presidents with the highest rates is not obvious.
@@ -223,7 +224,7 @@ ggplot(offense_type, aes(x = count, y = fct_reorder(OFFENSE_NAME, count))) +
 We took the top four offense types in the figure above and the top seven prejudice types together to draw this grouped bar chart. This chart shows the total amount of hate crimes that were motivated by each type of prejudice for each type of hate crime. The majority of each type of hate crime is motivated by an Anti-Black or African American prejudice, with "Intimidation" and "Destruction/Damage/Vandalism of Property" being the most common type of hate crimes motivated by this prejudice. "Anti-Black or African American" prejudice has the highest percentage in every offense type. We found that the percentage of Anti-Jewish prejudice in the "Destruction/Damage/Vandalism of Property" offense type is particularly high. The LGBT community also makes up a significant portion of every offense type. 
 
 
-```{r, fig.height = 10, fig.width = 8}
+```{r}
 offense_type <- hate_clean %>% select(OFFENSE_NAME) %>%
  group_by(OFFENSE_NAME) %>%
  summarize(count = sum(n()))%>%
@@ -243,15 +244,87 @@ fig
 
 ```
 
+This mosaic graph shows the relationship between Offender Race and Offense Type. Note this results ignore the unknown Unknown Offender Race. We found that Whites made up the largest portion of the top 4 offense types, followed by Blacks or African Americans.
+
+```{r, fig.height = 15, fig.width = 18, fig.align = "center"}
+library(ggmosaic)
+offensetype_df_1  <- offensetype_df[offensetype_df$OFFENDER_RACE != "Unknown", ]
+offensetype_df_2 = count(offensetype_df_1, OFFENSE_NAME, OFFENDER_RACE)
+
+
+offensetype_df_2_mosaic = ggplot(data = offensetype_df_2) +
+  geom_mosaic(aes(weight = n, x = product(OFFENSE_NAME), fill = OFFENDER_RACE))+ theme_grey(20)+ 
+  theme(axis.text.x = element_text( 
+    angle = 60)
+  )+ggtitle("Offender Race vs Offense Type (1991-2020)") +xlab("Offense Type")+ylab("Offender Race")+guides(fill=guide_legend(title="Offender Race"))
+
+offensetype_df_2_mosaic
+
+```
+
+## The relationship between total hate crime and month.
+
+By observing the bar chart below, we can find that September and October are the periods of high incidence of hate crimes, while December is the period of low incidence of hate crimes
+
+```{r}
+hate_plus_month = hate_clean %>% mutate(Month = month(INCIDENT_DATE))
+hate_plus_month_1 = hate_plus_month[!duplicated(hate_plus_month[,c('INCIDENT_ID','Month')]),]
+month <- hate_plus_month_1 %>% select(Month) %>%
+ group_by(Month) %>%
+ summarize(count = sum(n()))
+month = month %>% mutate(month_chr = as.factor(case_when(Month == 1 ~ 'Jan',
+                                       Month == 2 ~ 'Feb',
+                                       Month == 3 ~ 'Mar',
+                                       Month == 4 ~ 'Apr',
+                                       Month == 5 ~ 'May',
+                                       Month == 6 ~ 'Jun',
+                                       Month == 7 ~ 'Jul',
+                                       Month == 8 ~ 'Aug',
+                                       Month == 9 ~ 'Sep',
+                                       Month == 10 ~ 'Oct',
+                                       Month == 11 ~ 'Nov',
+                                       Month == 12 ~ 'Dec')))
+
+fig <- plot_ly(month, x = ~fct_rev(fct_reorder(month_chr,Month,.desc = TRUE)), y = ~count, type = 'bar',
+             marker = list(color = 'rgb(158,202,225)',
+                           line = list(color = 'rgb(8,48,107)', width = 1.5)))
+fig <- fig %>% layout(title = "Hate Crime Totals per Month (1991-2020)",
+         xaxis = list(title = "Month"),
+         yaxis = list(title = "Hate Crime Cases"))%>% 
+  layout(annotations = list(x = "Sep", y = 20738, text = "Max", showarrow = T)) %>%
+  layout(annotations = list(x = "Dec", y = 14245, text = "Min", showarrow = T))
+
+fig
+
+```
 
 
 
 
 
+## The relationship between hate crime cases and region. 
 
+We found that the West region has the highest number of reported Hate Crime cases, and U.S. Territories has the least number. Here U.S. Territories stands for Guam which makes sense since it has small number of population. The Midwest has the lowest number of hate crimes in the continental United States. 
 
+```{r}
 
+hate_region_1 = hate_clean[!duplicated(hate_clean[,c('INCIDENT_ID','REGION_NAME')]),]
+region <- hate_region_1 %>% select(REGION_NAME) %>%
+ group_by(REGION_NAME) %>%
+ summarize(count = sum(n()))
 
+region_2 = region%>%mutate(Region_name = factor(REGION_NAME,levels=c("Other","U.S. Territories","Midwest","South","Northeast","West")))
+
+fig <- plot_ly(region_2, x = ~count, y = ~Region_name, type = 'bar',orientation = 'h',
+             marker = list(color = 'rgb(158,202,225)',
+                           line = list(color = 'rgb(8,48,107)', width = 1.5)))
+fig <- fig %>% layout(title = "Total number of hate crimes in the United States by Region (1991-2020)",
+         xaxis = list(title = "Hate Crime Cases"),
+         yaxis = list(title = "Region"))
+
+fig
+
+```
 
 
 
