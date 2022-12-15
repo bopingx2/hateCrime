@@ -23,7 +23,7 @@
 <meta name="author" content="Boping Xia, Mingkang Yuan" />
 
 
-<meta name="date" content="2022-12-14" />
+<meta name="date" content="2022-12-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -93,14 +93,14 @@
 </ul></li>
 <li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#trends-of-hate-crime"><i class="fa fa-check"></i><b>4.1</b> Trends of hate crime</a></li>
-<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#which-groups-of-people-were-attacked-the-most"><i class="fa fa-check"></i><b>4.2</b> Which groups of people were attacked the most?</a></li>
-<li class="chapter" data-level="4.3" data-path="results.html"><a href="results.html#the-relationship-between-the-race-of-the-attacker-and-the-race-of-the-attacked."><i class="fa fa-check"></i><b>4.3</b> The relationship between the race of the attacker and the race of the attacked.</a></li>
-<li class="chapter" data-level="4.4" data-path="results.html"><a href="results.html#which-presidential-administration-had-the-highest-or-lowest-hate-crime-rate"><i class="fa fa-check"></i><b>4.4</b> Which presidential administration had the highest or lowest hate crime rate?</a></li>
-<li class="chapter" data-level="4.5" data-path="results.html"><a href="results.html#which-groups-of-people-have-the-highest-hate-crime-cases"><i class="fa fa-check"></i><b>4.5</b> Which groups of people have the highest hate crime cases?</a></li>
-<li class="chapter" data-level="4.6" data-path="results.html"><a href="results.html#what-types-of-hate-crimes-offense-type-were-most-common-in-the-last-30-years"><i class="fa fa-check"></i><b>4.6</b> What types of hate crimes (Offense Type) were most common in the last 30 years?</a></li>
-<li class="chapter" data-level="4.7" data-path="results.html"><a href="results.html#the-relationship-between-total-hate-crime-and-month."><i class="fa fa-check"></i><b>4.7</b> The relationship between total hate crime and month.</a></li>
-<li class="chapter" data-level="4.8" data-path="results.html"><a href="results.html#the-relationship-between-hate-crime-cases-and-region."><i class="fa fa-check"></i><b>4.8</b> The relationship between hate crime cases and region.</a></li>
+<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#trends-of-hate-crime-overall-rise-but-there-were-also-periods-of-depression"><i class="fa fa-check"></i><b>4.1</b> Trends of hate crime: Overall rise, but there were also periods of Depression</a></li>
+<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#black-or-african-american-people-were-the-most-discriminated-against"><i class="fa fa-check"></i><b>4.2</b> Black or African American people were the most discriminated against</a></li>
+<li class="chapter" data-level="4.3" data-path="results.html"><a href="results.html#whites-discriminated-against-other-races-the-most-while-blacks-preferred-to-discriminate-against-whites"><i class="fa fa-check"></i><b>4.3</b> Whites discriminated against other races the most, while Blacks preferred to discriminate against Whites</a></li>
+<li class="chapter" data-level="4.4" data-path="results.html"><a href="results.html#the-frequency-of-hate-crimes-is-the-highest-under-donald-trump-but-it-is-not-obvious"><i class="fa fa-check"></i><b>4.4</b> The frequency of Hate Crimes is the highest under Donald Trump, but it is not obvious</a></li>
+<li class="chapter" data-level="4.5" data-path="results.html"><a href="results.html#white-people-have-the-most-recorded-hate-crimes"><i class="fa fa-check"></i><b>4.5</b> White people have the most recorded Hate Crimes</a></li>
+<li class="chapter" data-level="4.6" data-path="results.html"><a href="results.html#top-offense-types-of-hate-crimes"><i class="fa fa-check"></i><b>4.6</b> Top Offense Types of Hate Crimes</a></li>
+<li class="chapter" data-level="4.7" data-path="results.html"><a href="results.html#the-total-number-of-hate-crimes-at-the-end-or-beginning-of-the-year-is-relatively-small"><i class="fa fa-check"></i><b>4.7</b> The total number of Hate Crimes at the end or beginning of the year is relatively small</a></li>
+<li class="chapter" data-level="4.8" data-path="results.html"><a href="results.html#the-west-and-northeast-regions-have-the-highest-hate-crime-records"><i class="fa fa-check"></i><b>4.8</b> The West and Northeast regions have the highest Hate Crime records</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
@@ -130,15 +130,33 @@
 <p>Our original data file <code>Hate_Crime.csv</code> is from FBI Crime data Explorer (CDE) (<a href="https://crime-data-explorer.fr.cloud.gov/pages/home" class="uri">https://crime-data-explorer.fr.cloud.gov/pages/home</a>). According to the description provided along with the file, the data was collected through FBI’s Uniform Crime Reporting (UCR) Program. UCR is a program aimed to provide reliable crime statistics for public use. There are approximately 18,000 law enforcement units in the US participate in this program. Each unit voluntarily send their data through National Incident-Based Reporting System (NIBRS), which allows them provide detailed information of a crime such as offenders’ bias against specific social identity. At the end of each year, FBI will release the data a year before with multiple section through CDE and Hate Crime Statistics is a dedicated collection along with others.</p>
 <pre><code>## The dimension of the dataset is 219577 rows and 28 columns.</code></pre>
 <pre><code>## The columns&#39; names are:</code></pre>
-<pre><code>##  [1] &quot;INCIDENT_ID&quot;              &quot;DATA_YEAR&quot;                &quot;ORI&quot;                     
-##  [4] &quot;PUB_AGENCY_NAME&quot;          &quot;PUB_AGENCY_UNIT&quot;          &quot;AGENCY_TYPE_NAME&quot;        
-##  [7] &quot;STATE_ABBR&quot;               &quot;STATE_NAME&quot;               &quot;DIVISION_NAME&quot;           
-## [10] &quot;REGION_NAME&quot;              &quot;POPULATION_GROUP_CODE&quot;    &quot;POPULATION_GROUP_DESC&quot;   
-## [13] &quot;INCIDENT_DATE&quot;            &quot;ADULT_VICTIM_COUNT&quot;       &quot;JUVENILE_VICTIM_COUNT&quot;   
-## [16] &quot;TOTAL_OFFENDER_COUNT&quot;     &quot;ADULT_OFFENDER_COUNT&quot;     &quot;JUVENILE_OFFENDER_COUNT&quot; 
-## [19] &quot;OFFENDER_RACE&quot;            &quot;OFFENDER_ETHNICITY&quot;       &quot;VICTIM_COUNT&quot;            
-## [22] &quot;OFFENSE_NAME&quot;             &quot;TOTAL_INDIVIDUAL_VICTIMS&quot; &quot;LOCATION_NAME&quot;           
-## [25] &quot;BIAS_DESC&quot;                &quot;VICTIM_TYPES&quot;             &quot;MULTIPLE_OFFENSE&quot;        
+<pre><code>##  [1] &quot;INCIDENT_ID&quot;             
+##  [2] &quot;DATA_YEAR&quot;               
+##  [3] &quot;ORI&quot;                     
+##  [4] &quot;PUB_AGENCY_NAME&quot;         
+##  [5] &quot;PUB_AGENCY_UNIT&quot;         
+##  [6] &quot;AGENCY_TYPE_NAME&quot;        
+##  [7] &quot;STATE_ABBR&quot;              
+##  [8] &quot;STATE_NAME&quot;              
+##  [9] &quot;DIVISION_NAME&quot;           
+## [10] &quot;REGION_NAME&quot;             
+## [11] &quot;POPULATION_GROUP_CODE&quot;   
+## [12] &quot;POPULATION_GROUP_DESC&quot;   
+## [13] &quot;INCIDENT_DATE&quot;           
+## [14] &quot;ADULT_VICTIM_COUNT&quot;      
+## [15] &quot;JUVENILE_VICTIM_COUNT&quot;   
+## [16] &quot;TOTAL_OFFENDER_COUNT&quot;    
+## [17] &quot;ADULT_OFFENDER_COUNT&quot;    
+## [18] &quot;JUVENILE_OFFENDER_COUNT&quot; 
+## [19] &quot;OFFENDER_RACE&quot;           
+## [20] &quot;OFFENDER_ETHNICITY&quot;      
+## [21] &quot;VICTIM_COUNT&quot;            
+## [22] &quot;OFFENSE_NAME&quot;            
+## [23] &quot;TOTAL_INDIVIDUAL_VICTIMS&quot;
+## [24] &quot;LOCATION_NAME&quot;           
+## [25] &quot;BIAS_DESC&quot;               
+## [26] &quot;VICTIM_TYPES&quot;            
+## [27] &quot;MULTIPLE_OFFENSE&quot;        
 ## [28] &quot;MULTIPLE_BIAS&quot;</code></pre>
 <p>As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. <code>INCIDENT_ID</code>, <code>ADULT_VICTIM_COUNT</code>, <code>JUVENILE_VICTIM_COUNT</code>, <code>TOTAL_OFFENDER_COUNT</code>, <code>ADULT_OFFENDER_COUNT</code>, <code>JUVENILE_OFFENDER_COUNT</code>, <code>VICTIM_COUNT</code>, and <code>TOTAL_INDIVIDUAL_VICTIMS</code> are continuous variables. <code>DATA_YEAR</code> and <code>INCIDENT_DATE</code> should be date variables, but they are stored in <code>int</code> and <code>chr</code>.</p>
 <p>Although FBI provided a very large and detailed dataset, it contains several issues. The most important one, as stated by FBI, because the motivation of a crime is a subjective factor, it is difficult to determine whether the crime is because of offenders’ bias. Hence, law enforcement conclude a hate crime only if there are sufficient evidence to prove it. This resulting in underestimating overall occurrence of hate crimes but it could guarantee the accuracy of our analysis. As we understanding and interpreting dataset, we found some problem regarding the quality of the dataset. There are multiple columns contains value of empty string instead of <code>NA</code>, which leads to a erroneous missing value analysis. In the <code>OFFENSE_NAME</code> and <code>BIAS_DESC</code> column, some observation contains multiple variables. These situations are indicated in <code>MULTIPLE_OFFENSE</code> and <code>MULTIPLE_BIAS</code>. It is reasonable for a crime aiming to multiple group of people with several offense, but it creates obstacles when analyzing offense type and bias. There are other problems, like <code>TOTAL_OFFENDER_COUNT</code> contains a huge portion of 0s and adults and juveniles partition are not reported before 2011. Since we dropped these columns, we do not dig into the reason of these problems.</p>
@@ -148,7 +166,8 @@
 <p>First cleaning step is to extract columns needed for out target. We have already mentioned our goal in the introduction section, here we just select related column and reduced it to 7 columns.</p>
 <pre><code>## The dimension of the dataset is 219577 rows and 7 columns.</code></pre>
 <pre><code>## The columns&#39; names are:</code></pre>
-<pre><code>## [1] &quot;INCIDENT_ID&quot;   &quot;STATE_NAME&quot;    &quot;REGION_NAME&quot;   &quot;INCIDENT_DATE&quot; &quot;OFFENDER_RACE&quot; &quot;OFFENSE_NAME&quot; 
+<pre><code>## [1] &quot;INCIDENT_ID&quot;   &quot;STATE_NAME&quot;    &quot;REGION_NAME&quot;  
+## [4] &quot;INCIDENT_DATE&quot; &quot;OFFENDER_RACE&quot; &quot;OFFENSE_NAME&quot; 
 ## [7] &quot;BIAS_DESC&quot;</code></pre>
 <p>Next we will split the row with multiple <code>BIAS_DESC</code> and <code>OFFENSE_NAME</code>. Before the split, the unique entries in <code>BIAS_DESC</code> and <code>OFFENSE_NAME</code> are 279 and 353. After the split, the unique entries in <code>BIAS_DESC</code> and <code>OFFENSE_NAME</code> are reduced to 35 and 48. Note that this will create multiple rows for one crime and can leads to over counting. We will only count crime with distinct <code>INCIDENT_ID</code> to overcome this issue.</p>
 <pre><code>## BEFORE</code></pre>
@@ -173,6 +192,11 @@
 </div>
 <div id="missing-value-analysis" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Missing value analysis<a href="data.html#missing-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Since our data set is gigantic, we cannot use either heat map nor <code>mi</code> library to plot and interpret missing pattern. Here we will using <code>redav</code> library provided by Professor Robbins to plot the missing patters. To better visualize the graph, we changed column name into its index. We also transform all empty string into <code>NA</code>.</p>
+<p>For the raw dataset, the missing pattern seems pretty messy. However it shows that about 95% rows are missing <code>PUB_AGENCY_UNIT</code>, 80% rows are missing <code>OFFENDER_ETHNICITY</code>, 75% rows are missing <code>ADULT_VICTIM_COUNT</code>, <code>JUVENILE_VICTIM_COUNT</code>, <code>ADULT_OFFENDER_COUNT</code>, and <code>JUVENILE_OFFENDER_COUNT</code>. It is not surprised that <code>PUB_AGENCY_UNIT</code> has a huge number of missing because after we dig into the dataset, <code>PUB_AGENCY_UNIT</code> are only provided when the unit is affiliated to a bigger law enforcement, like university or state police. Aside of that, the other five columns usually missing together. While checking the dataset, we found that all of the rows are missing these five values until 2013. After 2013, some of them are still missing, but gradually decreased. We think a possible explanation is that prior to 2013, FBI did not require law enforcement report these data. After 2013, FBI required to provide these information and some law enforcement respond to it immediately, while others may have some difficulties in submitting these data but eventually they all comply with the FBI requirement. In addition to these major columns missing, <code>TOTAL_INDIVIDUAL_VICTIMS</code> and <code>OFFENDER_RACE</code> also have some minor missing but they don’t have correlation, which seems to be happened completely at random.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>The cleaned data only has one missing pattern, and only has a negligible amount of missing. The missing column is <code>OFFENDER_RACE</code> and in the cleaning part we have already counted there only 20 missing value. We found that <code>OFFENDER_RACE</code> has a entry <code>Unknown</code>. Therefore, we will replace <code>NA</code> with <code>Unknown</code>.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 
 </div>
 </div>
