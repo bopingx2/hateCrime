@@ -7,22 +7,61 @@ Our original data file `Hate_Crime.csv` is from FBI Crime data Explorer (CDE) (<
 ```{r}
 library(tidyverse)
 hate = read.csv("resource/hate_crime.csv")
-sprintf("The dimension of the dataset is %d rows and %d columns.", dim(hate)[1], dim(hate)[2])
-print("The columns' names are:")
+str <- sprintf("The dimension of the dataset is %d rows and %d columns.\n",
+               dim(hate)[1], dim(hate)[2])
+cat(str)
+cat("The columns' names are:\n")
 names(hate)
 ```
 
-As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. `INCIDENT_ID`, `ADULT_VICTIM_COUNT`, `JUVENILE_VICTIM_COUNT`, `TOTAL_OFFENDER_COUNT`, `ADULT_OFFENDER_COUNT`, `JUVENILE_OFFENDER_COUNT`, `VICTIM_COUNT`, and `TOTAL_INDIVIDUAL_VICTIMS` are continuous variables. `DATA_YEAR` and `INCIDENT_DATE` are date variables. 
+As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. `INCIDENT_ID`, `ADULT_VICTIM_COUNT`, `JUVENILE_VICTIM_COUNT`, `TOTAL_OFFENDER_COUNT`, `ADULT_OFFENDER_COUNT`, `JUVENILE_OFFENDER_COUNT`, `VICTIM_COUNT`, and `TOTAL_INDIVIDUAL_VICTIMS` are continuous variables. `DATA_YEAR` and `INCIDENT_DATE` should be date variables, but they are stored in `int` and `chr`. 
 
 Although FBI provided a very large and detailed dataset, it contains several issues. The most important one, as stated by FBI, because the motivation of a crime is a subjective factor, it is difficult to determine whether the crime is because of offenders' bias. Hence, law enforcement conclude a hate crime only if there are sufficient evidence to prove it. This resulting in underestimating overall occurrence of hate crimes but it could guarantee the accuracy of our analysis. As we understanding and interpreting dataset, we found some problem regarding the quality of the dataset. There are multiple columns contains value of empty string instead of `NA`, which leads to a erroneous missing value analysis. In the `OFFENSE_NAME` and `BIAS_DESC` column, some observation contains multiple variables. These situations are indicated in `MULTIPLE_OFFENSE` and `MULTIPLE_BIAS`. It is reasonable for a crime aiming to multiple group of people with several offense, but it creates obstacles when analyzing offense type and bias. There are other problems, like `TOTAL_OFFENDER_COUNT` contains a huge portion of 0s and adults and juveniles partition are not reported before 2011. Since we dropped these columns, we do not dig into the reason of these problems.
 
 ## Cleaning / transformation
 
+First cleaning step is to extract columns needed for out target. We have already mentioned our goal in the introduction section, here we just select related column and reduced it to 7 columns.
+
 ```{r}
-hate_clean <- hate |>
+hate_select <- hate |>
   select(c(INCIDENT_ID, STATE_NAME, REGION_NAME, INCIDENT_DATE,
-           OFFENDER_RACE, OFFENSE_NAME, BIAS_DESC)) |>
+           OFFENDER_RACE, OFFENSE_NAME, BIAS_DESC))
+str <- sprintf("The dimension of the dataset is %d rows and %d columns.\n", 
+        dim(hate_select)[1], dim(hate_select)[2])
+cat(str)
+cat("The columns' names are:\n")
+names(hate_select)
+```
+
+Next we will split the row with multiple `BIAS_DESC` and `OFFENSE_NAME`. Before the split, the unique entries in `BIAS_DESC` and `OFFENSE_NAME` are 279 and 353. After the split, the unique entries in `BIAS_DESC` and `OFFENSE_NAME` are reduced to 35 and 48. Note that this will create multiple rows for one crime and can leads to over counting. We will only count crime with distinct `INCIDENT_ID` to overcome this issue.
+
+```{r}
+cat("BEFORE\n")
+str <- sprintf("The unique BIAS_DESC counts is: %d.\n",
+               length(unique(hate_select$BIAS_DESC)))
+cat(str)
+str <- sprintf("The unique OFFENSE_NAME counts is: %d.\n",
+        length(unique(hate_select$OFFENSE_NAME)))
+cat(str)
+hate_split <- hate_select |>
   separate_rows(BIAS_DESC, sep = ";") |>
+  separate_rows(OFFENSE_NAME, sep = ";")
+cat("AFTER\n")
+str <- sprintf("The unique BIAS_DESC counts is: %d.\n",
+        length(unique(hate_split$BIAS_DESC)))
+cat(str)
+str <- sprintf("The unique OFFENSE_NAME counts is: %d.\n",
+        length(unique(hate_split$OFFENSE_NAME)))
+cat(str)
+str <- sprintf("The dimension of the dataset is %d rows and %d columns.\n", 
+        dim(hate_split)[1], dim(hate_split)[2])
+cat(str)
+```
+
+A strange pattern in `BIAS_DESC` is that while it contains `Anti-Lesbian (Female)`, `Anti-Gay (Male)`, `Anti-Bisexual`, and `Anti-Transgender` separately, it also has a entry `Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)`. We will combine the separate listings into the mixed one.
+
+```{r}
+hate_comb <- hate_split |>
   mutate(BIAS_DESC =
            replace(BIAS_DESC, 
                    BIAS_DESC == "Anti-Lesbian (Female)",
@@ -38,11 +77,48 @@ hate_clean <- hate |>
   mutate(BIAS_DESC =
            replace(BIAS_DESC, 
                    BIAS_DESC == "Anti-Transgender",
-                   "Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)")) |>
-  separate_rows(OFFENSE_NAME, sep = ";") |>
+                   "Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)"))
+str <- sprintf("The unique BIAS_DESC counts is: %d.\n",
+               length(unique(hate_comb$BIAS_DESC)))
+cat(str)
+```
+
+The `INCIDENT_DATE` is stored as `character` class. We need to change it into `Date` class.
+
+```{r}
+cat("BEFORE\n")
+str <- sprintf("The class of INCIDENT_DATE is : %s.\n",
+               class(hate_comb$INCIDENT_DATE))
+cat(str)
+hate_clean <- hate_comb |>
   mutate(INCIDENT_DATE = as.Date(INCIDENT_DATE, "%d-%b-%y"))
+cat("AFTER\n")
+str <- sprintf("The class of INCIDENT_DATE is : %s.\n",
+               class(hate_clean$INCIDENT_DATE))
+cat(str)
+```
+
+Last step is to process empty string. We consider it as `NA`. And because empty string only happens in categorical variables, we will replace it with `Unknown`.
+
+```{r}
+cat("BEFORE\n")
+str <- sprintf("The number of rows with empty string is : %d.\n",
+               dim(filter_all(hate_clean, any_vars(. == "")))[1])
+cat(str)
 hate_clean[hate_clean == ""] <- "Unknown"
-  
+cat("AFTER\n")
+str <- sprintf("The number of rows with empty string is : %d.\n",
+               dim(filter_all(hate_clean, any_vars(. == "")))[1])
+cat(str)
 ```
 
 ## Missing value analysis
+
+```{r}
+hate[hate == ""] <- NA
+hate_na <- hate |> 
+    rownames_to_column("id") |>
+    gather(key, value, -id) |>
+    mutate(missing = ifelse(is.na(value), "yes", "no"))
+
+```
