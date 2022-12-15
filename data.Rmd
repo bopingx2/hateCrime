@@ -133,7 +133,7 @@ For the raw dataset, the missing pattern seems pretty messy. However it shows th
 plot_missing(hate_na)
 ```
 
-The cleaned data only has one missing pattern, and only has a negligible amount of missing. The missing column is `OFFENDER_RACE` and in the cleaning part we have already counted there only 20 missing value.
+The cleaned data only has one missing pattern, and only has a negligible amount of missing. The missing column is `OFFENDER_RACE` and in the cleaning part we have already counted there only 20 missing value. We found that `OFFENDER_RACE` has a entry `Unknown`. Therefore, we will replace `NA` with `Unknown`.
 
 ```{r}
 plot_missing(hate_clean_na)
