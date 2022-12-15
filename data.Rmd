@@ -14,7 +14,7 @@ cat("The columns' names are:\n")
 names(hate)
 ```
 
-As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. `INCIDENT_ID`, `ADULT_VICTIM_COUNT`, `JUVENILE_VICTIM_COUNT`, `TOTAL_OFFENDER_COUNT`, `ADULT_OFFENDER_COUNT`, `JUVENILE_OFFENDER_COUNT`, `VICTIM_COUNT`, and `TOTAL_INDIVIDUAL_VICTIMS` are continuous variables. `DATA_YEAR` and `INCIDENT_DATE` should be date variables, but they are stored in `int` and `chr`. 
+As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. `INCIDENT_ID`, `ADULT_VICTIM_COUNT`, `JUVENILE_VICTIM_COUNT`, `TOTAL_OFFENDER_COUNT`, `ADULT_OFFENDER_COUNT`, `JUVENILE_OFFENDER_COUNT`, `VICTIM_COUNT`, and `TOTAL_INDIVIDUAL_VICTIMS` are continuous variables. `DATA_YEAR` and `INCIDENT_DATE` should be date variables, but they are stored in `int` and `chr`.
 
 Although FBI provided a very large and detailed dataset, it contains several issues. The most important one, as stated by FBI, because the motivation of a crime is a subjective factor, it is difficult to determine whether the crime is because of offenders' bias. Hence, law enforcement conclude a hate crime only if there are sufficient evidence to prove it. This resulting in underestimating overall occurrence of hate crimes but it could guarantee the accuracy of our analysis. As we understanding and interpreting dataset, we found some problem regarding the quality of the dataset. There are multiple columns contains value of empty string instead of `NA`, which leads to a erroneous missing value analysis. In the `OFFENSE_NAME` and `BIAS_DESC` column, some observation contains multiple variables. These situations are indicated in `MULTIPLE_OFFENSE` and `MULTIPLE_BIAS`. It is reasonable for a crime aiming to multiple group of people with several offense, but it creates obstacles when analyzing offense type and bias. There are other problems, like `TOTAL_OFFENDER_COUNT` contains a huge portion of 0s and adults and juveniles partition are not reported before 2011. Since we dropped these columns, we do not dig into the reason of these problems.
 
@@ -26,6 +26,7 @@ First cleaning step is to extract columns needed for out target. We have already
 hate_select <- hate |>
   select(c(INCIDENT_ID, STATE_NAME, REGION_NAME, INCIDENT_DATE,
            OFFENDER_RACE, OFFENSE_NAME, BIAS_DESC))
+hate_clean_na <- hate_select
 str <- sprintf("The dimension of the dataset is %d rows and %d columns.\n", 
         dim(hate_select)[1], dim(hate_select)[2])
 cat(str)
@@ -114,6 +115,26 @@ cat(str)
 
 ## Missing value analysis
 
+Since our data set is gigantic, we cannot use either heat map nor `mi` library to plot and interpret missing pattern. Here we will using `redav` library provided by Professor Robbins to plot the missing patters. To better visualize the graph, we changed column name into its index. We also transform all empty string into `NA`.
+
 ```{r}
-hate[hate == ""] <- NA
+library(redav)
+hate_na <- hate
+colnames(hate_na) <- as.character(c(1:28))
+hate_clean_na <- hate_na |>
+  select(c(1, 8, 10, 13, 19, 22, 25))
+hate_na[hate_na == ""] <- NA
+hate_clean_na[hate_clean_na == ""] <- NA
+```
+
+For the raw dataset, the missing pattern seems pretty messy. However it shows that about 95% rows are missing `PUB_AGENCY_UNIT`, 80% rows are missing `OFFENDER_ETHNICITY`, 75% rows are missing `ADULT_VICTIM_COUNT`, `JUVENILE_VICTIM_COUNT`, `ADULT_OFFENDER_COUNT`, and `JUVENILE_OFFENDER_COUNT`. It is not surprised that `PUB_AGENCY_UNIT` has a huge number of missing because after we dig into the dataset, `PUB_AGENCY_UNIT` are only provided when the unit is affiliated to a bigger law enforcement, like university or state police. Aside of that, the other five columns usually missing together. While checking the dataset, we found that all of the rows are missing these five values until 2013. After 2013, some of them are still missing, but gradually decreased. We think a possible explanation is that prior to 2013, FBI did not require law enforcement report these data. After 2013, FBI required to provide these information and some law enforcement respond to it immediately, while others may have some difficulties in submitting these data but eventually they all comply with the FBI requirement. In addition to these major columns missing, `TOTAL_INDIVIDUAL_VICTIMS` and `OFFENDER_RACE` also have some minor missing but they don't have correlation, which seems to be happened completely at random.
+
+```{r}
+plot_missing(hate_na)
+```
+
+The cleaned data only has one missing pattern, and only has a negligible amount of missing. The missing column is `OFFENDER_RACE` and in the cleaning part we have already counted there only 20 missing value.
+
+```{r}
+plot_missing(hate_clean_na)
 ```
