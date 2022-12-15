@@ -51,7 +51,7 @@ trends_plot %>%
 
 ## Which groups of people were attacked the most?
 
-The plot shows the number of total hate crimes for each prejudice. As can be seen from the Cleveland dot chart, black or African Americans are the groups most attacked by hate crime(almost 70,000 reported incidents). Asians, however, were the seventh most attacked group(over 7,000 reported incidents). Please note that our graph here only shows the total number of incidents involving people who have been attacked over the last 20 years, as opposed to which group is most vulnerable. We will take the results of the graph to analyse the relationship between the total number of people attacked in different categories under different presidents. 
+The plot shows the number of total hate crimes for each prejudice. As can be seen from the Cleveland dot chart, `Black or African Americans` are the groups most attacked by hate crime(almost 70,000 reported incidents). `Asians`, however, were the seventh most attacked group(over 7,000 reported incidents). Please note that our graph here only shows the total number of incidents involving people who have been attacked over the last 20 years, as opposed to which group is most vulnerable. We will take the results of the graph to analyse the relationship between the total number of people attacked in different categories under different presidents. 
 
 ```{r, fig.height = 10, fig.width = 8, fig.align = "center"}
 bias <- hate_clean %>% select(BIAS_DESC) %>%
@@ -76,7 +76,7 @@ ggplot(bias, aes(x = count, y = fct_reorder(BIAS_DESC, count))) +
 
 ## The relationship between the race of the attacker and the race of the attacked.
 
-The following graph shows the relationship between the race of the attacker and the race of the attacked. Note we will ignore the unknown offender race in this case. We found that when Black or African american people were attacked, white people attacked them the most, by a significant margin. We also found that whites were the most aggressive toward all groups except toward Jewish. The majority of Anti-White hate crimes were committed by Black people and White people. 
+The following graph shows the relationship between the race of the attacker and the race of the attacked. Note we will ignore the `Unknown` offender race in this case. We found that when `Black or African American` people were attacked, `White` people attacked them the most, by a significant margin. We also found that `White` people were the most aggressive toward all groups except toward `Jewish`. The majority of `Anti-White` hate crimes were committed by `Black` people and `White` people. 
 
 ```{r, fig.height = 10, fig.width = 18, fig.align = "center"}
 bias_top_7 = bias %>% head(7)
@@ -104,7 +104,7 @@ attacker_attacked_plot
 
 ## Which presidential administration had the highest or lowest hate crime rate?
 
-Because each U.S. president has a different number of years in office, it would be unfair to compare total hate crime cases here. So we divided the number of hate crime cases during each president's tenure by the number of years in office to get the hate crime rate for each president. We found that Donald Trump had the highest hate prime rate and George Bush(1st term) had the lowest. But the difference between the three presidents with the highest rates is not obvious.
+Because each U.S. president has a different number of years in office, it would be unfair to compare total hate crime cases here. So we divided the number of hate crime cases during each president's tenure by the number of years in office to get the hate crime rate for each president. We found that `Donald Trump` had the highest hate prime rate and `George Bush(1st term)` had the lowest. But the difference between the three presidents with the highest rates is not obvious.
 
 ```{r}
 president_ds <- hate_plusyr %>% 
@@ -135,7 +135,7 @@ rate_plot = ggplot(president_ds,aes(x=fct_rev(fct_reorder(president,rate,.desc =
 rate_plot
 ```
 
-At the same time, we can also draw a trend chart of the changing relationship of prejudice over time during the tenure of different presidents. We found an increase in all kinds of prejudice during the first George Bush administration. During the period of Bill Clinton, the general trend of anti Black or African american was up, while the general trend of anti White was down. All kinds of prejudice in the second George Bush years were in a lull (neither rising nor falling). The overall trend of anti-Black or African american decline under Barack Obama administration is different from any other period. While anti-Black or African american trends have risen sharply under Donald Trump years, other kinds of prejudice have crept up.
+At the same time, we can also draw a trend chart of the changing relationship of prejudice over time during the tenure of different presidents. We found an increase in all kinds of prejudice during the first `George Bush` administration. During the period of `Bill Clinton`, the general trend of `Anti Black or African American` was up, while the general trend of `Anti White` was down. All kinds of prejudice in the second `George Bush` years were in a lull (neither rising nor falling). The overall trend of `Anti-Black or African American` decline under Barack Obama administration is different from any other period. While `Anti-Black or African American` trends have risen sharply under `Donald Trump` years, other kinds of prejudice have crept up.
 
 ```{r, fig.height = 10, fig.width = 24, fig.align = "center"}
 bias_top_5 = bias %>% head(5)
@@ -174,7 +174,7 @@ president_prejudice_plot
 
 ## Which groups of people have the highest hate crime cases?
 
-Note here we ignore the unknown case since it tells nothing. Through this pie chart, we can find that 70.7 percent of all reported hate crime cases were committed by White people, which is nearly 45% higher than the black or African American group that ranks second. We can find that Asians are less likely to be offenders.
+Note here we ignore the unknown case since it tells nothing. Through this pie chart, we can find that 70.7 percent of all reported hate crime cases were committed by `White` people, which is nearly 45% higher than the `Black or African American` group that ranks second. We can find that `Asians` are less likely to be offenders.
 
 ```{r, fig.align = "center"}
 offender_df = hate_clean %>%select(OFFENDER_RACE) %>%
@@ -206,7 +206,7 @@ fig
    
 ## What types of hate crimes (Offense Type) were most common in the last 30 years?
 
-This image shows all types of offense type. We found that "Destruction/Damage/Vandalism of Property", "Intimidation", "Simple Assault" , "Aggravated Assault" are the most popular. And the total number of incidents is far ahead of the latter category. We will use these four key offense type to draw the relationship between Offense type and Prejudice.
+This image shows all types of offense type. We found that `Destruction/Damage/Vandalism of Property`, `Intimidation`, `Simple Assault` , `Aggravated Assault` are the most popular. And the total number of incidents is far ahead of the latter category. We will use these four key offense type to draw the relationship between Offense type and Prejudice.
 
 ```{r, fig.height = 10, fig.width = 8}
 offense_type <- hate_clean %>% select(OFFENSE_NAME) %>%
@@ -221,7 +221,7 @@ ggplot(offense_type, aes(x = count, y = fct_reorder(OFFENSE_NAME, count))) +
 
 ```
 
-We took the top four offense types in the figure above and the top seven prejudice types together to draw this grouped bar chart. This chart shows the total amount of hate crimes that were motivated by each type of prejudice for each type of hate crime. The majority of each type of hate crime is motivated by an Anti-Black or African American prejudice, with "Intimidation" and "Destruction/Damage/Vandalism of Property" being the most common type of hate crimes motivated by this prejudice. "Anti-Black or African American" prejudice has the highest percentage in every offense type. We found that the percentage of Anti-Jewish prejudice in the "Destruction/Damage/Vandalism of Property" offense type is particularly high. The LGBT community also makes up a significant portion of every offense type. 
+We took the top four offense types in the figure above and the top seven prejudice types together to draw this grouped bar chart. This chart shows the total amount of hate crimes that were motivated by each type of prejudice for each type of hate crime. The majority of each type of hate crime is motivated by an `Anti-Black or African American` prejudice, with `Intimidation` and `Destruction/Damage/Vandalism of Property` being the most common type of hate crimes motivated by this prejudice. `Anti-Black or African American` prejudice has the highest percentage in every offense type. We found that the percentage of `Anti-Jewish` prejudice in the `Destruction/Damage/Vandalism of Property` offense type is particularly high. The `LGBT` community also makes up a significant portion of every offense type. 
 
 
 ```{r}
@@ -244,7 +244,7 @@ fig
 
 ```
 
-This mosaic graph shows the relationship between Offender Race and Offense Type. Note this results ignore the unknown Unknown Offender Race. We found that Whites made up the largest portion of the top 4 offense types, followed by Blacks or African Americans.
+This mosaic graph shows the relationship between Offender Race and Offense Type. Note this results ignore the `Unknown` Offender Race. We found that `Whites` made up the largest portion of the top 4 offense types, followed by `Blacks or African Americans`.
 
 ```{r, fig.height = 15, fig.width = 18, fig.align = "center"}
 library(ggmosaic)
@@ -264,7 +264,7 @@ offensetype_df_2_mosaic
 
 ## The relationship between total hate crime and month.
 
-By observing the bar chart below, we can find that September and October are the periods of high incidence of hate crimes, while December is the period of low incidence of hate crimes
+By observing the bar chart below, we can find that `September` and `October` are the periods of high incidence of hate crimes, while `December` is the period of low incidence of hate crimes
 
 ```{r}
 hate_plus_month = hate_clean %>% mutate(Month = month(INCIDENT_DATE))
@@ -304,7 +304,7 @@ fig
 
 ## The relationship between hate crime cases and region. 
 
-We found that the West region has the highest number of reported Hate Crime cases, and U.S. Territories has the least number. Here U.S. Territories stands for Guam which makes sense since it has small number of population. The Midwest has the lowest number of hate crimes in the continental United States. 
+We found that the `West region` has the highest number of reported Hate Crime cases, and `U.S. Territories` has the least number. Here `U.S. Territories` stands for Guam which makes sense since it has small number of population. The `Midwest` has the lowest number of hate crimes in the continental United States. 
 
 ```{r}
 
