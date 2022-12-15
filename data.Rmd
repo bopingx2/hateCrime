@@ -116,13 +116,4 @@ cat(str)
 
 ```{r}
 hate[hate == ""] <- NA
-hate_na <- hate |> 
-    rownames_to_column("id") |>
-    gather(key, value, -id) |>
-    mutate(missing = ifelse(is.na(value), "yes", "no"))
-
-<<<<<<< HEAD
 ```
-=======
-```
->>>>>>> 93f03d2355b0f2c4e168f39f19ed72ed6194905a
