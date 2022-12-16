@@ -147,7 +147,7 @@ president_prejudice_plot
 
 ## White people have the most recorded Hate Crimes
 
-Note here we ignore the unknown case since it tells nothing. Through this pie chart, we can find that most of the reported hate crime cases were committed by `White` people, which is a lot higher than the `Black or African American` group that ranks second. We can find that `Asians` are less likely to be offenders.
+Note here we ignore the unknown case since it tells nothing. Through this bar chart, we can find that most of the reported hate crime cases were committed by `White` people, which is a lot higher than the `Black or African American` group that ranks second. We can find that `Asians` are less likely to be offenders.
 
 ```{r, fig.align = "center"}
 offender_df = hate_clean %>%select(OFFENDER_RACE) %>%
