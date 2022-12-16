@@ -2,7 +2,7 @@
 
 ## Sources
 
-Our original data file `Hate_Crime.csv` is from FBI Crime data Explorer (CDE) (<https://crime-data-explorer.fr.cloud.gov/pages/home>). According to the description provided along with the file, the data was collected through FBI's Uniform Crime Reporting (UCR) Program. UCR is a program aimed to provide reliable crime statistics for public use. There are approximately 18,000 law enforcement units in the US participate in this program. Each unit voluntarily send their data through National Incident-Based Reporting System (NIBRS), which allows them provide detailed information of a crime such as offenders' bias against specific social identity. At the end of each year, FBI will release the data a year before with multiple section through CDE and Hate Crime Statistics is a dedicated collection along with others.
+Our original data file, `Hate_Crime.csv`, is from the FBI's Crime Data Explorer (CDE) (<https://crime-data-explorer.fr.cloud.gov/pages/home>). According to the description by the FBI, the data was collected through the FBI's Uniform Crime Reporting (UCR) Program. UCR is a program aimed at providing reliable crime statistics for public use. Approximately 18,000 law enforcement units in the US participate in this program. Each unit voluntarily sends its data through the National Incident-Based Reporting System (NIBRS), which allows them to provide detailed information about a crime, such as offenders' bias against specific social identity. At the end of each year, the FBI will release the data a year before with multiple sections through CDE, and Hate Crime Statistics is a dedicated collection along with others.
 
 ```{r}
 library(tidyverse)
@@ -16,11 +16,11 @@ names(hate)
 
 As we discover, the data has 219577 rows and 28 columns. Most of the variables are categorical. `INCIDENT_ID`, `ADULT_VICTIM_COUNT`, `JUVENILE_VICTIM_COUNT`, `TOTAL_OFFENDER_COUNT`, `ADULT_OFFENDER_COUNT`, `JUVENILE_OFFENDER_COUNT`, `VICTIM_COUNT`, and `TOTAL_INDIVIDUAL_VICTIMS` are continuous variables. `DATA_YEAR` and `INCIDENT_DATE` should be date variables, but they are stored in `int` and `chr`.
 
-Although FBI provided a very large and detailed dataset, it contains several issues. The most important one, as stated by FBI, because the motivation of a crime is a subjective factor, it is difficult to determine whether the crime is because of offenders' bias. Hence, law enforcement conclude a hate crime only if there are sufficient evidence to prove it. This resulting in underestimating overall occurrence of hate crimes but it could guarantee the accuracy of our analysis. As we understanding and interpreting dataset, we found some problem regarding the quality of the dataset. There are multiple columns contains value of empty string instead of `NA`, which leads to a erroneous missing value analysis. In the `OFFENSE_NAME` and `BIAS_DESC` column, some observation contains multiple variables. These situations are indicated in `MULTIPLE_OFFENSE` and `MULTIPLE_BIAS`. It is reasonable for a crime aiming to multiple group of people with several offense, but it creates obstacles when analyzing offense type and bias. There are other problems, like `TOTAL_OFFENDER_COUNT` contains a huge portion of 0s and adults and juveniles partition are not reported before 2011. Since we dropped these columns, we do not dig into the reason of these problems.
+Although the FBI provided an extensive and detailed dataset, it contains several issues. The most important one, as stated by the FBI, is that because a crime's motivation is subjective, it is difficult to determine whether the crime is because of the offenders' bias. Hence, law enforcement concludes a hate crime only if sufficient evidence proves it is a hate crime. This results in underestimating the overall occurrence of hate crimes, but it could guarantee the accuracy of our analysis. As we understood and interpreted the dataset, we found some problems regarding the quality of the dataset. Multiple columns contain value of empty string instead of `NA`, which leads to erroneous missing value analysis. Some observation contains multiple variables in the `OFFENSE_NAME` and `BIAS_DESC` columns. These situations are indicated in `MULTIPLE_OFFENSE` and `MULTIPLE_BIAS`. It is reasonable for a crime aimed at multiple groups of people with several offenses, but it creates obstacles when analyzing offense type and bias. Other problems, like `TOTAL_OFFENDER_COUNT` contains a massive portion of 0s, and adults and juveniles partition is not reported before 2013. Since we dropped these columns, we did not dig into the reason for these problems.
 
 ## Cleaning / transformation
 
-First cleaning step is to extract columns needed for out target. We have already mentioned our goal in the introduction section, here we just select related column and reduced it to 7 columns.
+The first cleaning step is to extract the columns needed for our target. We have already mentioned our goal in the introduction section. Here we selected related columns and reduced it to 7 columns.
 
 ```{r}
 hate_select <- hate |>
@@ -34,7 +34,7 @@ cat("The columns' names are:\n")
 names(hate_select)
 ```
 
-Next we will split the row with multiple `BIAS_DESC` and `OFFENSE_NAME`. Before the split, the unique entries in `BIAS_DESC` and `OFFENSE_NAME` are 279 and 353. After the split, the unique entries in `BIAS_DESC` and `OFFENSE_NAME` are reduced to 35 and 48. Note that this will create multiple rows for one crime and can leads to over counting. We will only count crime with distinct `INCIDENT_ID` to overcome this issue.
+Next, we will split the row with multiple `BIAS_DESC` and `OFFENSE_NAME`. Before the split, the unique entries in `BIAS_DESC` and `OFFENSE_NAME` are 279 and 353. After the split, the unique entries in `BIAS_DESC` and `OFFENSE_NAME` are reduced to 35 and 48. Note that this will create multiple rows for one crime and can lead to overcounting. Therefore, we will only count crimes with distinct `INCIDENT_ID` to overcome this issue.
 
 ```{r}
 cat("BEFORE\n")
@@ -59,7 +59,7 @@ str <- sprintf("The dimension of the dataset is %d rows and %d columns.\n",
 cat(str)
 ```
 
-A strange pattern in `BIAS_DESC` is that while it contains `Anti-Lesbian (Female)`, `Anti-Gay (Male)`, `Anti-Bisexual`, and `Anti-Transgender` separately, it also has a entry `Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)`. We will combine the separate listings into the mixed one.
+A strange pattern in `BIAS_DESC` is that while it contains `Anti-Lesbian (Female)`, `Anti-Gay (Male)`, `Anti-Bisexual`, and `Anti-Transgender` separately, it also has an entry `Anti-Lesbian, Gay, Bisexual, or Transgender (Mixed Group)`. We will combine the separate listings into the mixed one.
 
 ```{r}
 hate_comb <- hate_split |>
@@ -99,7 +99,7 @@ str <- sprintf("The class of INCIDENT_DATE is : %s.\n",
 cat(str)
 ```
 
-Last step is to process empty string. We consider it as `NA`. And because empty string only happens in categorical variables, we will replace it with `Unknown`.
+The last step is to process empty strings. We consider it as `NA`. And because empty string only happens in categorical variables, we will replace it with `Unknown`.
 
 ```{r}
 cat("BEFORE\n")
@@ -115,7 +115,7 @@ cat(str)
 
 ## Missing value analysis
 
-Since our data set is gigantic, we cannot use either heat map nor `mi` library to plot and interpret missing pattern. Here we will using `redav` library provided by Professor Robbins to plot the missing patters. To better visualize the graph, we changed column name into its index. We also transform all empty string into `NA`.
+Since our data set is gigantic, we cannot use either a heat map or `mi` library to plot and interpret the missing pattern. Here we will use `redav` library provided by Professor Robbins to plot the missing patterns. We changed the column names into their index to better visualize the graph. We also transform all empty strings into `NA`.
 
 ```{r}
 library(redav)
@@ -127,13 +127,13 @@ hate_na[hate_na == ""] <- NA
 hate_clean_na[hate_clean_na == ""] <- NA
 ```
 
-For the raw dataset, the missing pattern seems pretty messy. However it shows that about 95% rows are missing `PUB_AGENCY_UNIT`, 80% rows are missing `OFFENDER_ETHNICITY`, 75% rows are missing `ADULT_VICTIM_COUNT`, `JUVENILE_VICTIM_COUNT`, `ADULT_OFFENDER_COUNT`, and `JUVENILE_OFFENDER_COUNT`. It is not surprised that `PUB_AGENCY_UNIT` has a huge number of missing because after we dig into the dataset, `PUB_AGENCY_UNIT` are only provided when the unit is affiliated to a bigger law enforcement, like university or state police. Aside of that, the other five columns usually missing together. While checking the dataset, we found that all of the rows are missing these five values until 2013. After 2013, some of them are still missing, but gradually decreased. We think a possible explanation is that prior to 2013, FBI did not require law enforcement report these data. After 2013, FBI required to provide these information and some law enforcement respond to it immediately, while others may have some difficulties in submitting these data but eventually they all comply with the FBI requirement. In addition to these major columns missing, `TOTAL_INDIVIDUAL_VICTIMS` and `OFFENDER_RACE` also have some minor missing but they don't have correlation, which seems to be happened completely at random.
+For the raw dataset, the missing pattern seems messy. However, it shows that about 95% of rows are missing `PUB_AGENCY_UNIT`, 80% of rows are missing `OFFENDER_ETHNICITY`, and 75% are missing `ADULT_VICTIM_COUNT`, `JUVENILE_VICTIM_COUNT`, `ADULT_OFFENDER_COUNT`, and `JUVENILE_OFFENDER_COUNT`. It is not surprising that `PUB_AGENCY_UNIT` has a considerable number of missing because after we dig into the dataset, `PUB_AGENCY_UNIT` are only provided when the unit is affiliated with home law enforcement, like university or state police. Aside from that, the other five columns are usually missing together. While checking the dataset, we found that all the rows are missing these five values until 2013. After 2013, some of them are still missing but gradually decreased. A possible explanation is that before 2013, the FBI did not require law enforcement to report this data. After 2013, the FBI required law enforcement to provide this information, and some of them responded to it immediately, while others may have had some difficulties in submitting this data. Still, eventually, they all comply with the FBI requirement. In addition to these major columns missing, `TOTAL_INDIVIDUAL_VICTIMS` and `OFFENDER_RACE` also have some minor missing, but they don't have correlation, which seems to be happened completely at random.
 
 ```{r}
 plot_missing(hate_na)
 ```
 
-The cleaned data only has one missing pattern, and only has a negligible amount of missing. The missing column is `OFFENDER_RACE` and in the cleaning part we have already counted there only 20 missing value. We found that `OFFENDER_RACE` has a entry `Unknown`. Therefore, we will replace `NA` with `Unknown`.
+The cleaned data only has one missing pattern and a negligible amount of missing. The missing column is `OFFENDER_RACE` and in the cleaning part, we have already counted there only 20 missing values. We found that `OFFENDER_RACE` has an entry `Unknown`. Therefore, we will replace `NA` with `Unknown`.
 
 ```{r}
 plot_missing(hate_clean_na)
