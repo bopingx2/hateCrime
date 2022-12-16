@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+pre {
+  font-size: 7em;
+}
+
+.tick line {
+  stroke: #C0C0BB;
+}
+
+.tick text {
+  fill: #635F5D;
+}
+
+.marks .interiors {
+  fill: none;
+  stroke: #FFFFF0;
+  stroke-width: 1;
+}
+
+.axis-label {
+  font-size: 2.5em;
+  fill: #635F5D;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.slider-wrapper {
+  position: absolute;
+  left: 30px;
+  top: 500px;
+  display: block;
+  width: 800px;
+  height: 40px;
+  padding: 0;
+}
+
+.slider-wrapper div {
+  width: 100%;
+  height: 100%;
+  transform-origin: 30px 30px;
+}
+
+.slider-wrapper input {
+  width: 350px;
+  height: 20px;
+}
+
+.slider-wrapper datalist {
+  display: flex;
+  width: 350px;
+}
+
+.slider-wrapper datalist option {
+  font-size: 0.05px;
+  transform-origin: top center;
+  transform: rotate(-90deg);
+}
+
+.slider-wrapper datalist option:nth-child(1){
+	transform: translate(-4px, -5px);
+}
+.slider-wrapper datalist option:nth-child(2){
+	transform: translate(15px, -5px);
+}
+.slider-wrapper datalist option:nth-child(3){
+	transform: translate(40px, -5px);
+}
+.slider-wrapper datalist option:nth-child(4){
+	transform: translate(64px, -5px);
+}
+.slider-wrapper datalist option:nth-child(5){
+	transform: translate(88px, -5px);
+}
+.slider-wrapper datalist option:nth-child(6){
+	transform: translate(117px, -5px);
+}
+.slider-wrapper datalist option:nth-child(7){
+	transform: translate(144px, -5px);
+}
+
+.button-wrapper {
+  position: absolute;
+  left: 110px;
+  top: 500px;
+  display: block;
+  width: 100px;
+  height: 20px;
+  padding: 0;
+}
+
+.border {
+	transition: 0.5s;
+}
+
+.border:hover {
+	stroke: black;
+}
