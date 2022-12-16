@@ -147,7 +147,7 @@ president_prejudice_plot
 
 ## White people have the most recorded Hate Crimes
 
-Note here we ignore the unknown case since it tells nothing. This pie chart shows that 70.7 percent of all reported hate crime cases were committed by `White` people, which is nearly 45% higher than the `Black or African American` group that ranks second. We can find that `Asians` are less likely to be offenders.
+Note here we ignore the unknown case since it tells nothing. Through this pie chart, we can find that most of the reported hate crime cases were committed by `White` people, which is a lot higher than the `Black or African American` group that ranks second. We can find that `Asians` are less likely to be offenders.
 
 ```{r, fig.align = "center"}
 offender_df = hate_clean %>%select(OFFENDER_RACE) %>%
@@ -157,18 +157,14 @@ offender_df = hate_clean %>%select(OFFENDER_RACE) %>%
 offender_df = offender_df[2:7,]
 colors <- c('rgb(211,94,96)', 'rgb(128,133,133)', 'rgb(144,103,167)', 'rgb(171,104,87)', 'rgb(114,147,203)','rgb(46,8,8)','rgb(135,20,93)')
 
-fig <- plot_ly(offender_df, labels = ~OFFENDER_RACE, values = ~count, type = 'pie',
-        textposition = 'inside',
-        textinfo = 'label+percent',
-        insidetextfont = list(color = '#FFFFFF'),
-        hoverinfo = 'text',
-        marker = list(colors = colors,
-                      line = list(color = '#FFFFFF', width = 1)),
-                      #The 'pull' attribute can also be used to create space between the sectors
-        showlegend = TRUE)
-fig <- fig %>% layout(title = 'Number of Offenders by Race (Percentage) (1991-2020)',
-         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+fig <- plot_ly(offender_df, x = ~fct_rev(fct_reorder(OFFENDER_RACE,count,.desc = FALSE)), y = ~count, type = 'bar',
+        marker = list(color = colors, width = 1.5))
+
+fig <- fig %>% layout(title = "Number of Offenders by Race (1991-2020)",
+         xaxis = list(title = "Offenders Race"),
+         yaxis = list(title = "Hate Crime Cases"))%>% 
+  layout(annotations = list(x = "White", y = 90720, text = "Most", showarrow = T)) %>%
+  layout(annotations = list(x = "Native Hawaiian or Other Pacific Islander", y = 85, text = "Least", showarrow = T))
 
 fig
 ```
