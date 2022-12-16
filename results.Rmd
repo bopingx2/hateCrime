@@ -79,21 +79,21 @@ attacker_attacked_plot
 
 ## The frequency of Hate Crimes is the highest under Donald Trump, but it is not obvious
 
-Because each U.S. president has a different number of years in office, comparing total hate crime cases here would be unfair. So we divided the number of hate crime cases during each president's tenure by the number of years in office to get the hate crime rate for each president. We found that `Donald Trump` had the highest hate prime rate and `George Bush(1st term)` had the lowest. But the difference between the three presidents with the highest rates is not obvious.
+Because each U.S. president has a different number of years in office, comparing total hate crime cases here would be unfair. So we divided the number of hate crime cases during each president's tenure by the number of years in office to get the hate crime rate for each president. We found that `Donald Trump` had the highest hate crime rate and `George H. W. Bush` had the lowest. But the difference between the three presidents with the highest rates is not obvious.
 
 ```{r}
 president_ds <- hate_plusyr %>% 
-mutate(president = as.factor(case_when(DATA_YEAR < 1993 ~ 'George Bush(1st term)',
+mutate(president = as.factor(case_when(DATA_YEAR < 1993 ~ 'George H. W. Bush',
                                        DATA_YEAR >= 1993 & DATA_YEAR <= 2000 ~ 'Bill Clinton',
-                                       DATA_YEAR >= 2001 & DATA_YEAR <= 2008 ~ 'George Bush(2nd term)',
+                                       DATA_YEAR >= 2001 & DATA_YEAR <= 2008 ~ 'George W. Bush',
                                        DATA_YEAR >= 2009 & DATA_YEAR <= 2016 ~ 'Barack Obama',
                                        DATA_YEAR >= 2017 ~ 'Donald Trump'))) %>% 
   select(president) %>%
   group_by(president) %>%
   summarize(count = sum(n()))%>%
-  mutate(tenure = case_when(president == 'George Bush(1st term)'~ 2,
+  mutate(tenure = case_when(president == 'George H. W. Bush'~ 2,
                                        president =='Bill Clinton'~ 8,
-                                       president =='George Bush(2nd term)'~ 8,
+                                       president =='George W. Bush'~ 8,
                                        president =='Barack Obama'~8,
                                        president =='Donald Trump'~ 4)) %>%
   mutate(rate = count/tenure)
@@ -110,27 +110,25 @@ rate_plot = ggplot(president_ds,aes(x=fct_rev(fct_reorder(president,rate,.desc =
 rate_plot
 ```
 
-At the same time, we can also draw a trend chart of the changing relationship of prejudice overtime during the tenure of different presidents. We found an increase in all kinds of prejudice during the first `George Bush` administration. During the `Bill Clinton` period, the general trend of `Anti Black or African American` was up, while the general trend of `Anti White` was down. All kinds of prejudice in the second `George Bush` years were in a lull (neither rising nor falling). The overall trend of `Anti-Black or African American` decline under the Barack Obama administration differs from any other period. While `Anti-Black or African American` trends have risen sharply under `Donald Trump` years, different kinds of prejudice have crept up.
+At the same time, we can also draw a trend chart of the changing relationship of prejudice overtime during the tenure of different presidents. We found an increase in all kinds of prejudice during the `George H. W. Bush` administration. During the `Bill Clinton` period, the general trend of `Anti Black or African American` was up, while the general trend of `Anti White` was down. All kinds of prejudice in the `George W. Bush` years were in a lull (neither rising nor falling). The overall trend of `Anti-Black or African American` decline under the Barack Obama administration differs from any other period. While `Anti-Black or African American` trends have risen sharply under `Donald Trump` years, different kinds of prejudice have crept up.
 
 ```{r, fig.height = 10, fig.width = 24, fig.align = "center"}
 bias_top_5 = bias %>% head(5)
 president_prejudice <- hate_plusyr %>% 
-mutate(president = as.factor(case_when(DATA_YEAR < 1993 ~ '1George Bush(1st term)',
+mutate(president = as.factor(case_when(DATA_YEAR < 1993 ~ '1George H. W. Bush',
                                        DATA_YEAR >= 1993 & DATA_YEAR <= 2000 ~ '2Bill Clinton',
-                                       DATA_YEAR >= 2001 & DATA_YEAR <= 2008 ~ '3George Bush(2nd term)',
+                                       DATA_YEAR >= 2001 & DATA_YEAR <= 2008 ~ '3George W. Bush',
                                        DATA_YEAR >= 2009 & DATA_YEAR <= 2016 ~ '4Barack Obama',
                                        DATA_YEAR >= 2017 ~ '5Donald Trump')))%>% 
   filter(BIAS_DESC %in% bias_top_5$BIAS_DESC)%>%
   select(DATA_YEAR,president,BIAS_DESC) 
 
 predident_names <- c(
-                    `1George Bush(1st term)` = "GB
-1st",
+                    `1George H. W. Bush` = "GHWB",
                     `2Bill Clinton` = "Bill Clinton",
-                    `3George Bush(2nd term)` = "George Bush(2nd term)",
+                    `3George W. Bush` = "George W. Bush",
                     `4Barack Obama` = "Barack Obama",
-                    `5Donald Trump` = "Donald 
-Trump"
+                    `5Donald Trump` = "Donald Trump"
                     )
 
 president_prejudice_plot = ggplot(president_prejudice, aes(DATA_YEAR, color = BIAS_DESC))+
@@ -258,7 +256,7 @@ fig
 
 ## The West and Northeast regions have the highest Hate Crime records
 
-We found that the `West region` has the highest reported Hate Crime cases, and `U.S. Territories` has the least number. Here `U.S. Territories` stands for Guam, which makes sense since it has a small population. The `Midwest` has the lowest number of hate crimes in the continental United States. 
+We found that the `West region` has the highest reported Hate Crime cases, and `U.S. Territories` has the least number. Here `U.S. Territories` stands for Guam, which makes sense since it has a small population. The `Midwest` has the lowest number of hate crimes in the continental United States. The `Other` entry refers to incidents reported by law enforcement at the feral level, such as the FBI and military police. Due to their distinctness, we did not dig into them.
 
 ```{r}
 hate_region_1 = hate_clean[!duplicated(hate_clean[,c('INCIDENT_ID','REGION_NAME')]),]
